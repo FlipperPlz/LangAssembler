@@ -1,4 +1,6 @@
-﻿namespace LangAssembler.Steppers;
+﻿using System;
+
+namespace LangAssembler.Steppers;
 
 
 /// <summary>
