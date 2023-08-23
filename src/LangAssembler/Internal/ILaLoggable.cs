@@ -2,7 +2,7 @@
 
 namespace LangAssembler.Internal;
 
-internal interface ILaLoggable<out T>
+public interface ILaLoggable<out T>
 {
     public ILogger<T> Logger { get; }
 }

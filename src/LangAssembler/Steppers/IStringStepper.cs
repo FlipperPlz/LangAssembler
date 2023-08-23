@@ -1,4 +1,5 @@
 ﻿using System;
+using LangAssembler.Internal;
 
 namespace LangAssembler.Steppers;
 
@@ -7,7 +8,7 @@ namespace LangAssembler.Steppers;
 /// Provides an interface for a simple char by char reader, relies on a sliding window to keep track
 /// of position. Currently content size is limited by <see cref="int.MaxValue"/>.
 /// </summary>
-public interface IStringStepper : IDisposable, IFormattable
+public interface IStringStepper : IDisposable, IFormattable, ILaLoggable<IStringStepper>
 {
     /// <summary>
     /// This is the content of the stepper.
