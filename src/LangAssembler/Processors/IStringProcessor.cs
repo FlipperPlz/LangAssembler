@@ -1,6 +1,6 @@
 ﻿using LangAssembler.Internal;
 
-namespace LangAssembler.Core;
+namespace LangAssembler.Processors;
 
 /// <summary>
 /// Provides an interface for a simple char by char reader, relies on a sliding window to keep track

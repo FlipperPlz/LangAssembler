@@ -4,7 +4,7 @@ using LangAssembler.Extensions;
 using LangAssembler.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace LangAssembler.Core;
+namespace LangAssembler.Processors;
 
 public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
 {
@@ -30,13 +30,13 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
     /// 2. Our position is after the buffer. (EOF)
     /// 3. Our buffer is empty, what are you doing! D:
     /// </summary>
-    public char? CurrentChar { get; private set; }
+    public virtual char? CurrentChar { get; protected set; }
 
     /// <summary>
     /// Gets the character in the content just before the Position. Nullability is used the same way as its used in
     /// <see cref="IStringProcessor.CurrentChar"/>.
     /// </summary>
-    public char? PreviousChar { get; private set; }
+    public virtual char? PreviousChar { get; protected set; }
     
     private bool _disposed;
 
@@ -118,6 +118,7 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
         _disposed = true;
     }
 
+    public string this[Range index] => this.GetRange(index);
 
     public void Dispose()
     {

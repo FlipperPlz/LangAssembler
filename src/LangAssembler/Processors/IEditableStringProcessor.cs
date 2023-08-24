@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using LangAssembler.Core.Options;
 
-namespace LangAssembler.Core;
+namespace LangAssembler.Processors;
 
 /// <summary>
 /// Implementation of IBisStringStepper with the added ability to edit data as you're stepping through it.
@@ -17,4 +17,5 @@ public interface IEditableStringProcessor : IStringProcessor
     /// Replaces all pattern matches defined by the regex in the string.
     /// </summary>
     void ReplaceAll(Regex pattern, string replaceWith, StringProcessorPositionalReplacementOption endOption);
+    
 }

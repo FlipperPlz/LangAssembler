@@ -1,21 +1,22 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using LangAssembler.Core.Extensions;
 using LangAssembler.Core.Options;
+using LangAssembler.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace LangAssembler.Core;
+namespace LangAssembler.Processors.Tracked;
 
-public class EditableStringProcessor : StringProcessor, IEditableStringProcessor
+public class TrackedEditableStringProcessor : TrackedStringProcessor, IEditableStringProcessor
 {
-    public EditableStringProcessor(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
+    public TrackedEditableStringProcessor(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
     {
     }
 
-    public EditableStringProcessor(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
+    public TrackedEditableStringProcessor(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
     {
     }
 
+    
     public void ReplaceRange(Range range, string replacement, out string replacedText,
         StringProcessorPositionalReplacementOption endOption)
     {
