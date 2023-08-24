@@ -1,9 +1,9 @@
-﻿namespace LangAssembler.Steppers.Options;
+﻿namespace LangAssembler.Core.Options;
 
 /// <summary>
 /// Enumeration for text replacement position options.
 /// </summary>
-public enum StepperTextReplacementPositionOption : byte
+public enum StringProcessorPositionalReplacementOption : byte
 {
     /// <summary>
     /// HugRight indicates the position should be set to the upper bound.

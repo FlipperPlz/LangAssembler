@@ -1,24 +1,23 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using LangAssembler.Steppers.Options;
+using LangAssembler.Core.Extensions;
+using LangAssembler.Core.Options;
 using Microsoft.Extensions.Logging;
 
-namespace LangAssembler.Steppers;
+namespace LangAssembler.Core;
 
-public class MutableStringStepper : StringStepper, IMutableStringStepper
+public class EditableStringProcessor : StringProcessor, IEditableStringProcessor
 {
-    public MutableStringStepper(string content, ILogger<IStringStepper>? logger) : base(content, logger)
+    public EditableStringProcessor(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
     {
     }
 
-    public MutableStringStepper(BinaryReader reader, Encoding encoding, StepperDisposalOption option, ILogger<IStringStepper>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
+    public EditableStringProcessor(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
     {
     }
 
     public void ReplaceRange(Range range, string replacement, out string replacedText,
-        StepperTextReplacementPositionOption endPositionOption)
+        StringProcessorPositionalReplacementOption endOption)
     {
         int start = range.Start.Value, end = range.End.Value;
         var remaining = Length - Position;
@@ -36,13 +35,13 @@ public class MutableStringStepper : StringStepper, IMutableStringStepper
 
         replacedText = this.GetRange(range);
         Content = string.Concat(Content.AsSpan(0, start), replacement, Content.AsSpan(end));
-        this.JumpToReplaceEnd(remaining, start, end, endPositionOption);
+        this.JumpToReplaceEnd(remaining, start, end, endOption);
     }
 
-    public void ReplaceAll(Regex pattern, string replaceWith, StepperTextReplacementPositionOption endPositionOption)
+    public void ReplaceAll(Regex pattern, string replaceWith, StringProcessorPositionalReplacementOption endOption)
     {
         var remaining = Length - Position;
         Content = pattern.Replace(Content, replaceWith);
-        this.JumpToReplaceEnd(remaining, remaining, remaining, endPositionOption);
+        this.JumpToReplaceEnd(remaining, remaining, remaining, endOption);
     }
 }

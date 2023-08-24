@@ -1,14 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.Text;
+using LangAssembler.Core.Options;
 using LangAssembler.Extensions;
 using LangAssembler.Internal;
-using LangAssembler.Steppers.Options;
 using Microsoft.Extensions.Logging;
 
-namespace LangAssembler.Steppers;
+namespace LangAssembler.Core;
 
-public class StringStepper : LaLoggable<IStringStepper>, IStringStepper
+public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
 {
     /// <summary>
     /// This is the content of the stepper.
@@ -36,19 +34,19 @@ public class StringStepper : LaLoggable<IStringStepper>, IStringStepper
 
     /// <summary>
     /// Gets the character in the content just before the Position. Nullability is used the same way as its used in
-    /// <see cref="IStringStepper.CurrentChar"/>.
+    /// <see cref="IStringProcessor.CurrentChar"/>.
     /// </summary>
     public char? PreviousChar { get; private set; }
     
     private bool _disposed;
 
     
-    public StringStepper(string content, ILogger<IStringStepper>? logger) : base(logger)
+    public StringProcessor(string content, ILogger<IStringProcessor>? logger) : base(logger)
     {
         Content = content;
     }
     
-    public StringStepper(BinaryReader reader, Encoding encoding, StepperDisposalOption option, ILogger<IStringStepper>? logger = default, int? length = null, long? stringStart = null) : base(logger)
+    public StringProcessor(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(logger)
     {
         var backupStart = reader.BaseStream.Position;
         var start = backupStart;
@@ -62,26 +60,26 @@ public class StringStepper : LaLoggable<IStringStepper>, IStringStepper
         Content = encoding.GetString(reader.ReadBytes(byteCount));
         switch (option)
         {
-            case StepperDisposalOption.JumpBackToStart:
+            case StringProcessorDisposalOption.JumpBackToStart:
                 reader.BaseStream.Seek(backupStart, SeekOrigin.Begin);
                 break;
-            case StepperDisposalOption.JumpToStringStart:
+            case StringProcessorDisposalOption.JumpToStringStart:
                 reader.BaseStream.Seek(start, SeekOrigin.Begin);
                 break;
-            case StepperDisposalOption.Dispose:
+            case StringProcessorDisposalOption.Dispose:
                 reader.Dispose();
                 break;
-            case StepperDisposalOption.JumpToStringEnd:
+            case StringProcessorDisposalOption.JumpToStringEnd:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
     }
 
-    ~StringStepper() => Dispose(false);
+    ~StringProcessor() => Dispose(false);
 
     /// <summary>
-    /// Jumps to a certain position and correctly sets <see cref="IStringStepper.CurrentChar"/> and <see cref="IStringStepper.PreviousChar"/>.
+    /// Jumps to a certain position and correctly sets <see cref="IStringProcessor.CurrentChar"/> and <see cref="IStringProcessor.PreviousChar"/>.
     /// </summary>
     /// <param name="position">The position to jump to.</param>
     public virtual char? JumpTo(int position)
