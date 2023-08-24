@@ -40,23 +40,29 @@ public interface IStringStepper : IDisposable, IFormattable, ILaLoggable<IString
     /// </summary>
     public char? PreviousChar { get; }
     
+    /// <summary>
+    /// Jumps to a certain position and correctly sets <see cref="CurrentChar"/> and <see cref="PreviousChar"/>.
+    /// </summary>
+    /// <param name="position">The position to jump to.</param>
+    public char? JumpTo(int position);
     
     /// <summary>
-    /// Increments the position of string stepper forward by count.
+    /// Resets the contents of the stepper and resets the window.
     /// </summary>
-    /// <param name="count">Number of positions to move forward.</param>
-    public void MoveForward(int count);
-    
-    
-    /// <summary>
-    /// Moves the position of string stepper backward by count.
-    /// </summary>
-    /// <param name="count">Number of positions to move backward.</param>
-    public char? MoveBackward(int count);
+    /// <param name="content">The new content to write to buffer.</param>
+    public void ResetStepper(string? content = null);
     
     /// <summary>
     /// Simple interface level getter for Content.
     /// </summary>
     string IFormattable.ToString(string? format, IFormatProvider? formatProvider) => Content;
+
+    
+    /// <summary>
+    /// Gets a range of text from a stepper.
+    /// </summary>
+    /// <param name="range">The range to retrieve</param>
+    /// <returns>Substring of <see cref="Content"/></returns>
+    string this[Range range] => Content[range];
 }
 

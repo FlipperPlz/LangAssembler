@@ -4,5 +4,5 @@ namespace LangAssembler.Internal;
 
 public interface ILaLoggable<out T>
 {
-    public ILogger<T> Logger { get; }
+    public ILogger<T>? Logger { get; }
 }
