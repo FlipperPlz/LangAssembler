@@ -1,10 +1,10 @@
 ﻿namespace LangAssembler.Lexer.Models.Substring;
 
-public readonly struct Substring : ISubstring
+public struct Substring : ISubstring
 {
     
-    public string TokenText { get; }
-    public int TokenStart { get; }
+    public string TokenText { get; set; }
+    public int TokenStart { get; set; }
     
     public Substring(string tokenText, int tokenStart)
     {

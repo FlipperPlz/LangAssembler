@@ -1,4 +1,5 @@
 ﻿using LangAssembler.Lexer.Models.Match;
+using LangAssembler.Lexer.Models.Substring;
 using LangAssembler.Lexer.Models.Type;
 
 namespace LangAssembler.Lexer.Extensions;
@@ -37,4 +38,11 @@ public static class TokenMatchExtensions
     /// <param name="type">The new token type.</param>
     public static void RetypeToken(this ITokenMatch match, ITokenType type) =>
         match.TokenType = type;
+    
+    /// <summary>
+    /// Converts a token match to a Substring instance with the text of the token, and position of the token's start in the original text.
+    /// </summary>
+    /// <param name="match">The token match instance to convert.</param>
+    /// <returns>Returns a Substring instance with the token text and position from the provided token match.</returns>
+    public static Substring ToSubstring(this ITokenMatch match) => new(match.TokenText, match.TokenStart);
 }

@@ -8,7 +8,7 @@ namespace LangAssembler.Processors.Tracked;
 
 public class TrackedStringProcessor : StringProcessor, ITrackedStringProcessorBase
 {
-    public int LineNumber { get; protected set; }
+    public int LineNumber { get; protected set; } = 1;
     public int ColumnNumber { get; protected set; }
     public int LineStart { get; protected set; }
     public IEnumerable<DocumentLineInfo> LineInfo => EditableLineInfo;

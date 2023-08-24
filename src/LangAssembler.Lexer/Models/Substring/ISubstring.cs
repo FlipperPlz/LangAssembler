@@ -9,11 +9,11 @@ public interface ISubstring
     /// Gets the matched token text.
     /// </summary>
     /// <value>A reference to the token text.</value>
-    public string TokenText { get; }
+    public string TokenText { get; set; }
     
     /// <summary>
     /// Gets the index at which the matched token starts in the text being tokenized.
     /// </summary>
     /// <value>A reference to the token start index.</value>
-    public int TokenStart { get; }
+    public int TokenStart { get; set; }
 }
