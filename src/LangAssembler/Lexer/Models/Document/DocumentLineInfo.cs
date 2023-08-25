@@ -1,4 +1,4 @@
-﻿using LangAssembler.Processors.Tracked.Base;
+﻿using LangAssembler.Processors.Tracked;
 
 namespace LangAssembler.Lexer.Models.Document;
 

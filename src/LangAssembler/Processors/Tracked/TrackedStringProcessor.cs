@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using LangAssembler.Core.Options;
 using LangAssembler.Lexer.Models.Document;
-using LangAssembler.Processors.Tracked.Base;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors.Tracked;

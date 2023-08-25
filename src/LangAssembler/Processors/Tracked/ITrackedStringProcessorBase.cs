@@ -1,6 +1,6 @@
 ﻿using LangAssembler.Lexer.Models.Document;
 
-namespace LangAssembler.Processors.Tracked.Base;
+namespace LangAssembler.Processors.Tracked;
 
 public interface ITrackedStringProcessorBase : IStringProcessor, IDocumentCoordinates
 {

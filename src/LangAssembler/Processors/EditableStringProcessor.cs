@@ -16,6 +16,9 @@ public class EditableStringProcessor : StringProcessor, IEditableStringProcessor
     {
     }
 
+    /// <summary>
+    /// Replaces the range of the string with the specified replacement.
+    /// </summary>
     public void ReplaceRange(Range range, string replacement, out string replacedText,
         StringProcessorPositionalReplacementOption endOption)
     {
@@ -38,6 +41,9 @@ public class EditableStringProcessor : StringProcessor, IEditableStringProcessor
         this.JumpToReplaceEnd(remaining, start, end, endOption);
     }
 
+    /// <summary>
+    /// Replaces all pattern matches defined by the regex in the string.
+    /// </summary>
     public void ReplaceAll(Regex pattern, string replaceWith, StringProcessorPositionalReplacementOption endOption)
     {
         var remaining = Length - Position;
