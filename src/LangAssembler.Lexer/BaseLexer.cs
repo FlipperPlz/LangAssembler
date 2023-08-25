@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using LangAssembler.Extensions;
+using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Events.Arguments;
 using LangAssembler.Lexer.Events.Delegates;
 using LangAssembler.Lexer.Extensions;
@@ -64,6 +65,26 @@ public abstract class BaseLexer : TrackedEditableStringProcessor, ILexer
     }
     
     /// <summary>
+    /// This method is designed to identify the next token type within the specified input buffer
+    /// </summary>
+    /// <remarks>
+    /// Invokes an abstract function, <see cref="LocateNextMatch"/>, which requires implementation by any class
+    /// that subclasses <see cref="BaseLexer"/>.These subclasses define their own rules for matching token types.
+    /// </remarks>
+    /// <param name="tokenStart">
+    /// An index within the input buffer where the search for the next token type commences.
+    /// </param>
+    /// <param name="currentChar">
+    /// A specific character from the input buffer at the position specified by <see cref="tokenStart"/>.
+    /// </param>
+    /// <returns>
+    /// An instance of the <see cref="ITokenType"/> interface, representing the type of the next matched token.
+    /// </returns>
+    protected virtual ITokenType GetNextMatch(int tokenStart, char? currentChar) => 
+        LocateNextMatch(tokenStart, currentChar);
+
+    
+    /// <summary>
     /// Locates the next match in the buffer starting from a given position. 
     /// This method is to be implemented by derived classes based on their specific token types and rules.
     /// </summary>
@@ -115,7 +136,7 @@ public abstract class BaseLexer : TrackedEditableStringProcessor, ILexer
     public virtual ITokenMatch LexToken()
     {
         var tokenStart = Position;
-        var type = LocateNextMatch(tokenStart, this.MoveForward());
+        var type = GetNextMatch(tokenStart, this.MoveForward());
         var match = type is IInvalidTokenType or null
             ? CreateInvalidMatch(tokenStart)
             : CreateTokenMatch(type, tokenStart);

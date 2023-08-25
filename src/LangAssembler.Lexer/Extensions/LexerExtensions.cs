@@ -1,4 +1,6 @@
-﻿namespace LangAssembler.Lexer.Extensions;
+﻿using LangAssembler.Lexer.Base;
+
+namespace LangAssembler.Lexer.Extensions;
 
 public static class LexerExtensions
 {

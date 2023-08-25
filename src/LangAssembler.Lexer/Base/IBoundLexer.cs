@@ -1,6 +1,6 @@
 ﻿using LangAssembler.Lexer.Models.TypeSet;
 
-namespace LangAssembler.Lexer;
+namespace LangAssembler.Lexer.Base;
 
 /// <summary>
 /// Represents a lexer bound to a specific type set.
@@ -12,5 +12,5 @@ public interface IBoundLexer<out TTypeSet> : ILexer where TTypeSet : ITokenTypeS
     /// <summary>
     /// Gets the default token type set (singleton) associated with the lexer.
     /// </summary>
-    public TTypeSet DefaultTokenTypeSet { get; }
+    public static virtual TTypeSet DefaultTokenTypeSet { get; } = default!;
 }

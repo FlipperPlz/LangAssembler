@@ -4,7 +4,7 @@ using LangAssembler.Processors.Tracked;
 using TokenEditedHandler = System.EventHandler<LangAssembler.Lexer.Events.Arguments.TokenMatchEditedEventArgs>;
 using TokenRemovedHandler = System.EventHandler<LangAssembler.Lexer.Models.Match.ITokenMatch>;
 
-namespace LangAssembler.Lexer;
+namespace LangAssembler.Lexer.Base;
 
 /// <summary>
 /// Defines the properties, methods and events of a LangAssembler Lexer.

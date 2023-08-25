@@ -1,4 +1,5 @@
-﻿using LangAssembler.Lexer.Models.Substring;
+﻿using LangAssembler.Lexer.Base;
+using LangAssembler.Lexer.Models.Substring;
 using LangAssembler.Lexer.Models.Type;
 
 namespace LangAssembler.Lexer.Models.Match;
