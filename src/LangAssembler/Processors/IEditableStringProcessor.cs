@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using LangAssembler.Core.Options;
+using LangAssembler.Options;
 
 namespace LangAssembler.Processors;
 

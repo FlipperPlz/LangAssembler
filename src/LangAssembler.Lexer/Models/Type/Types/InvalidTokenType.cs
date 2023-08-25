@@ -18,6 +18,9 @@ public class InvalidTokenType : IInvalidTokenType
     /// </summary>
     public string DebugName => InvalidTokenName;
 
+    /// <summary>
+    /// Private constructor to enforce the singleton pattern.
+    /// </summary>
     private InvalidTokenType()
     {
         

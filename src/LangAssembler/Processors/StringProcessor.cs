@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using LangAssembler.Core.Options;
 using LangAssembler.Extensions;
 using LangAssembler.Internal;
+using LangAssembler.Options;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors;
@@ -40,12 +40,25 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
     
     private bool _disposed;
 
-    
+    /// <summary>
+    /// Initializes a new instance of the StringProcessor class with given string content.
+    /// </summary>
+    /// <param name="content">The string content to be processed.</param>
+    /// <param name="logger">The logger used by this instance.</param>
     public StringProcessor(string content, ILogger<IStringProcessor>? logger) : base(logger)
     {
         Content = content;
     }
     
+    /// <summary>
+    /// Initializes a new instance of the StringProcessor class with content read from a BinaryReader given a certain encoding and disposal option.
+    /// </summary>
+    /// <param name="reader">The BinaryReader where the content is read.</param>
+    /// <param name="encoding">The Encoding used to read the content.</param>
+    /// <param name="option">The disposal option used after reading the content.</param>
+    /// <param name="logger">The logger used by this instance.</param>
+    /// <param name="length">The length of the content to read. If not specified, the data from the current position to the end of the stream will be read.</param>
+    /// <param name="stringStart">The start position in the BinaryReader where the content begins. If not specified, the current position of the BinaryReader will be used.</param>
     public StringProcessor(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(logger)
     {
         var backupStart = reader.BaseStream.Position;
@@ -105,6 +118,15 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
         CurrentChar = null;
     }
     
+    
+    /// <summary>
+    /// Gets the substring from the content with a specified range.
+    /// </summary>
+    /// <param name="index">A Range representing the start and end indices of the substring in the content.</param>
+    /// <returns>The substring from the content specified by the range.</returns>
+    public string this[Range index] => this.GetRange(index);
+
+    
     protected virtual void Dispose(bool disposing)
     {
         // Check if this object has been disposed already.
@@ -117,8 +139,6 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
         Content = string.Empty;
         _disposed = true;
     }
-
-    public string this[Range index] => this.GetRange(index);
 
     public void Dispose()
     {

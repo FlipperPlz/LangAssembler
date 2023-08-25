@@ -1,11 +1,14 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using LangAssembler.Core.Options;
 using LangAssembler.Extensions;
+using LangAssembler.Options;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors.Tracked;
 
+/// <summary>
+/// Represents a string processor that can track and edit string content.
+/// </summary>
 public class TrackedEditableStringProcessor : TrackedStringProcessor, IEditableStringProcessor
 {
     public TrackedEditableStringProcessor(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
@@ -16,7 +19,14 @@ public class TrackedEditableStringProcessor : TrackedStringProcessor, IEditableS
     {
     }
 
-    
+
+    /// <summary>
+    /// Replaces the range of the string with the specified replacement.
+    /// </summary>
+    /// <param name="range">The range of text to replace.</param>
+    /// <param name="replacement">The text to replace the range with.</param>
+    /// <param name="replacedText">Output parameter that the replaced text is written to.</param>
+    /// <param name="endOption">Option that controls the position of the processor after the replace operation.</param>
     public void ReplaceRange(Range range, string replacement, out string replacedText,
         StringProcessorPositionalReplacementOption endOption)
     {
@@ -39,6 +49,12 @@ public class TrackedEditableStringProcessor : TrackedStringProcessor, IEditableS
         this.JumpToReplaceEnd(remaining, start, end, endOption);
     }
 
+    /// <summary>
+    /// Replaces all pattern matches defined by the regex in the string.
+    /// </summary>
+    /// <param name="pattern">The Regex pattern that matches the text to be replaced.</param>
+    /// <param name="replaceWith">The text to replace the matched text with.</param>
+    /// <param name="endOption">Option that controls the position of the processor after the replace operation.</param>
     public void ReplaceAll(Regex pattern, string replaceWith, StringProcessorPositionalReplacementOption endOption)
     {
         var remaining = Length - Position;

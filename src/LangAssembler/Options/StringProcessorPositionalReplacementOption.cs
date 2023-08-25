@@ -1,4 +1,4 @@
-﻿namespace LangAssembler.Core.Options;
+﻿namespace LangAssembler.Options;
 
 /// <summary>
 /// Enumeration for text replacement position options.
