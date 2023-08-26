@@ -3,6 +3,14 @@ obj
 packages
 riderModule.iml
 _ReSharper.Caches
+### DocFX ###
+/**/DROP/
+/**/TEMP/
+/**/packages/
+/**/bin/
+/**/obj/
+_site
+
 
 # Created by httpswww.toptal.comdevelopersgitignoreapivisualstudio
 # Edit at httpswww.toptal.comdevelopersgitignoretemplates=visualstudio

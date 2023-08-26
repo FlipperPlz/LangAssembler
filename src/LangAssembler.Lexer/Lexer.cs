@@ -172,7 +172,6 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// Removes a specific token match from the sequence of prior matches, and triggers the TokenRemoved event.
     /// </summary>
     /// <inheritdoc cref="ILexer.RemoveTokenMatch"/>
-    /// <param name="tokenMatch">The specific token match to be removed.</param>
     public void RemoveTokenMatch(ITokenMatch tokenMatch)
     {
         if (!EventsMuted)

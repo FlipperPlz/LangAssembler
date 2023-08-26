@@ -10,6 +10,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Parser", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.PreProcessor", "src\LangAssembler.PreProcessor\LangAssembler.PreProcessor.csproj", "{45372553-E047-4984-AAA5-1DC4D451D0F0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{8BE3D79F-CDAC-4A57-B803-117FA581B37F}"
+	ProjectSection(SolutionItems) = preProject
+		docfx.json = docfx.json
+		LICENSE = LICENSE
+		articles\toc.yml = articles\toc.yml
+		index.md = index.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
