@@ -17,7 +17,7 @@ namespace LangAssembler.Lexer;
 /// <summary>
 /// Provides a base implementation for a lexer. 
 /// </summary>
-public abstract class BaseLexer : TrackedEditableStringProcessor, ILexer
+public abstract class Lexer : TrackedEditableStringProcessor, ILexer
 {
     protected static readonly ITokenType InvalidToken = InvalidTokenType.Instance;
 
@@ -55,12 +55,12 @@ public abstract class BaseLexer : TrackedEditableStringProcessor, ILexer
     public ITokenMatch? LastMatch { get; protected set; }
 
     /// <inheritdoc />
-    protected BaseLexer(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
+    protected Lexer(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
     {
     }
 
     /// <inheritdoc />
-    protected BaseLexer(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
+    protected Lexer(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
     {
     }
     
@@ -69,7 +69,7 @@ public abstract class BaseLexer : TrackedEditableStringProcessor, ILexer
     /// </summary>
     /// <remarks>
     /// Invokes an abstract function, <see cref="LocateNextMatch"/>, which requires implementation by any class
-    /// that subclasses <see cref="BaseLexer"/>.These subclasses define their own rules for matching token types.
+    /// that subclasses <see cref="Lexer"/>.These subclasses define their own rules for matching token types.
     /// </remarks>
     /// <param name="tokenStart">
     /// An index within the input buffer where the search for the next token type commences.
