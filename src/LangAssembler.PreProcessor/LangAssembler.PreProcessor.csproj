@@ -7,10 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LangAssembler\LangAssembler.csproj" />
+      <ProjectReference Include="..\LangAssembler.Parser\LangAssembler.Parser.csproj" />
     </ItemGroup>
-
-
 
 
 </Project>
