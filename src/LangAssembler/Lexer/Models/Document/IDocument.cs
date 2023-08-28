@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines methods and properties to represent a structured document.
 /// </summary>
-public interface IDocument : IDocumentCoordinates
+public interface IDocument : IDocumentCoordinates, IDisposable
 {
     /// <summary>
     /// Gets an enumeration of line information for each line in the document.

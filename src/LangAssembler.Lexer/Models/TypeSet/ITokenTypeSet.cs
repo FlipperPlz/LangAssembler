@@ -7,6 +7,5 @@ namespace LangAssembler.Lexer.Models.TypeSet;
 /// </summary>
 public interface ITokenTypeSet : IEnumerable<ITokenType>
 {
-    
 }
 

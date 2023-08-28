@@ -35,4 +35,5 @@ public static class DocumentExtensions
     public static string? GetLineText(this ITrackedStringProcessorBase trackedProcessor, int lineNumber) =>
         GetLineInfo(trackedProcessor, lineNumber)?.GetLineText(trackedProcessor);
     
+    
 }
