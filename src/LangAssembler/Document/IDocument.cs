@@ -12,15 +12,15 @@ public interface IDocument : IDisposable
     /// </summary>
     public IEnumerable<DocumentLineInfo> LineInfos { get; }
     
-    /// <summary>
-    /// Gets the stream of the document.
-    /// </summary>
-    public Stream DocumentStream { get; }
-    
-    /// <summary>
-    /// Gets the encoding of the document stream.
-    /// </summary>
-    public Encoding DocumentEncoding { get; set; }
+    // /// <summary>
+    // /// Gets the stream of the document.
+    // /// </summary>
+    // public Stream DocumentStream { get; }
+    //
+    // /// <summary>
+    // /// Gets the encoding of the document stream.
+    // /// </summary>
+    // public Encoding DocumentEncoding { get; set; }
     
     /// <summary>
     /// Gets the current position within the document.

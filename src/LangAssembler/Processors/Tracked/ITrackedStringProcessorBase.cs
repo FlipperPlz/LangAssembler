@@ -26,11 +26,11 @@ public interface ITrackedStringProcessorBase : IStringProcessor, IDocument
     /// </summary>
     int IDocument.DocumentLength => Length;
 
-    Stream IDocument.DocumentStream => throw new NotImplementedException();
-
-    Encoding IDocument.DocumentEncoding
-    {
-        get => throw new NotImplementedException();
-        set => throw new NotImplementedException();
-    }
+    // Stream IDocument.DocumentStream => throw new NotImplementedException();
+    //
+    // Encoding IDocument.DocumentEncoding
+    // {
+    //     get => throw new NotImplementedException();
+    //     set => throw new NotImplementedException();
+    // }
 }

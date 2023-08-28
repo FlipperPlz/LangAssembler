@@ -14,6 +14,11 @@ public class Document : IDocument
         // TODO release managed resources here
     }
 
+    
+    public int LineNumber { get; protected set; } = 1;
+    public int ColumnNumber { get; protected set; } = 1;
+    public int LineStart { get; protected set; } = -1;
+    public int DocumentLength => (int)DocumentStream.Length;
     protected readonly List<DocumentLineInfo> EditableLineInfo = new List<DocumentLineInfo>();
     public IEnumerable<DocumentLineInfo> LineInfos => EditableLineInfo; 
     public Stream DocumentStream { get; }
@@ -36,8 +41,4 @@ public class Document : IDocument
         LineStart = DocumentPosition + 1;
     }
 
-    public int LineNumber { get; protected set; } = 1;
-    public int ColumnNumber { get; protected set; } = 1;
-    public int LineStart { get; protected set; } = -1;
-    public int DocumentLength => (int)DocumentStream.Length;
 }
