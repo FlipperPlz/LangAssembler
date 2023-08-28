@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using LangAssembler.Lexer.Models.Document;
+using LangAssembler.Document;
 using LangAssembler.Options;
 using Microsoft.Extensions.Logging;
 

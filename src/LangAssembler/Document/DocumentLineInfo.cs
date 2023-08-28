@@ -1,6 +1,6 @@
 ﻿using LangAssembler.Processors;
 
-namespace LangAssembler.Lexer.Models.Document;
+namespace LangAssembler.Document;
 
 
 /// <summary>

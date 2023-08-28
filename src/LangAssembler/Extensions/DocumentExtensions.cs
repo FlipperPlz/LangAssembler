@@ -1,8 +1,8 @@
-﻿using LangAssembler.Lexer.Models.Document;
+﻿using LangAssembler.Document;
 using LangAssembler.Processors;
 using LangAssembler.Processors.Tracked;
 
-namespace LangAssembler.Lexer.Extensions;
+namespace LangAssembler.Extensions;
 
 public static class DocumentExtensions
 {
