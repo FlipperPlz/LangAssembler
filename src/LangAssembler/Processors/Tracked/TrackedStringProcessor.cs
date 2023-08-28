@@ -31,7 +31,9 @@ public class TrackedStringProcessor : StringProcessor, ITrackedStringProcessorBa
     /// Gets an enumeration of line information for each line in the document.
     /// </summary>
     public IEnumerable<DocumentLineInfo> LineInfos => EditableLineInfo;
-    
+
+    public bool FullyRead { get; }
+
 
     public TrackedStringProcessor(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
     {

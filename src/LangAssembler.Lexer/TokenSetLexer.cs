@@ -4,6 +4,7 @@ using LangAssembler.Lexer.Extensions;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
+using LangAssembler.Lexer.Providers;
 using LangAssembler.Options;
 using LangAssembler.Processors;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// <summary>
     /// Gets the default token type set (singleton) associated with the lexer.
     /// </summary>
-    public static TTokenSet DefaultTokenTypeSet => TokenSetExtensions.GetTokenSet<TTokenSet>();
+    public static TTokenSet DefaultTokenTypeSet => TokenSetProvider.LocateSet<TTokenSet>();
 
     protected TokenSetLexer(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
     {

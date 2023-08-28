@@ -12,15 +12,22 @@ public interface IDocument : IDisposable
     /// </summary>
     public IEnumerable<DocumentLineInfo> LineInfos { get; }
     
-    // /// <summary>
-    // /// Gets the stream of the document.
-    // /// </summary>
-    // public Stream DocumentStream { get; }
-    //
-    // /// <summary>
-    // /// Gets the encoding of the document stream.
-    // /// </summary>
-    // public Encoding DocumentEncoding { get; set; }
+    /// <summary>
+    /// Gets if the stream has been fully read.
+    /// If true, this means <see cref="LineInfos"/> is fully populated;
+    /// </summary>
+    public bool FullyRead { get; }
+    
+    
+    /// <summary>
+    /// Gets the stream of the document.
+    /// </summary>
+    public Stream DocumentStream { get; }
+    
+    /// <summary>
+    /// Gets the encoding of the document stream.
+    /// </summary>
+    public Encoding DocumentEncoding { get; set; }
     
     /// <summary>
     /// Gets the current position within the document.
