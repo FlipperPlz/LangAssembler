@@ -44,17 +44,11 @@ public class DocumentProcessor : Document, IDocumentProcessor
         CurrentChar = DocumentReader.ReadChar();
         PreviousChar = null;
         EditableLineInfo.Clear();
-        LineNumber = 1;
         ColumnNumber = 1;
-        FullyRead = false;
     }
 
     public string this[Range range] => throw new NotImplementedException();
-
-    public char? JumpTo(long position)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     protected override void Dispose(bool disposedManaged)
     {
@@ -62,5 +56,10 @@ public class DocumentProcessor : Document, IDocumentProcessor
         {
             DocumentReader.Close();
         }
+    }
+
+    public char? JumpTo(long position, bool assumeSameLine)
+    {
+        throw new NotImplementedException();
     }
 }

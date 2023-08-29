@@ -21,7 +21,7 @@ public interface IDocumentProcessor : IDocument, IStringProcessor
     /// </remarks>
     int IStringProcessor.Position => (int) this.GetDocumentPosition();
 
-    char? JumpTo(long position);
+    char? JumpTo(long position, bool assumeSameLine);
 
     /// <summary>
     /// Jumps to a certain position and correctly sets <see cref="IStringProcessor.CurrentChar"/> and <see cref="IStringProcessor.PreviousChar"/>.

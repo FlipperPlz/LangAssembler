@@ -1,4 +1,5 @@
 ﻿using LangAssembler.Doc;
+using LangAssembler.Doc.Line;
 using LangAssembler.Processors;
 using LangAssembler.Processors.Tracked;
 

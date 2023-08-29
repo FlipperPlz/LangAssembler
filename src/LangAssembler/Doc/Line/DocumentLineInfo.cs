@@ -1,4 +1,4 @@
-﻿namespace LangAssembler.Doc;
+﻿namespace LangAssembler.Doc.Line;
 
 
 /// <summary>
@@ -31,17 +31,34 @@ public class DocumentLineInfo
     /// <param name="lineNumber">The line number.</param>
     /// <param name="lineStart">Start position of the line in a document.</param>
     /// <param name="lineEnd">End position of the line in a document.</param>
-    public DocumentLineInfo(IDocument document, long lineNumber, long lineStart, long lineEnd)
+    public DocumentLineInfo(IDocument document, long lineNumber, long lineStart, long lineEnd) : this(document, lineNumber)
+    {
+        ChangeLineIndex(lineStart, lineEnd);
+    }
+    
+    public DocumentLineInfo(IDocument document, long lineNumber, long lineStart) : this(document, lineNumber)
     {
         Document = document;
         LineNumber = lineNumber;
-        ChangeLineIndex(lineStart, lineEnd);
+        LineStart = lineStart;
+    }
+    
+    public DocumentLineInfo(IDocument document, long lineNumber)
+    {
+        Document = document;
+        LineNumber = lineNumber;
     }
 
     public void ChangeLineIndex(long lineStart, long lineEnd)
     {
         
         LineStart = lineStart;
+        LineEnd = lineEnd;
+        LineLength = LineEnd - LineStart;
+    }
+
+    public void InitializeEnd(long lineEnd)
+    {
         LineEnd = lineEnd;
         LineLength = LineEnd - LineStart;
     }

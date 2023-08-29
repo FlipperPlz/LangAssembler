@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using LangAssembler.Doc.Enumerations;
+using LangAssembler.Doc.Line;
 
 namespace LangAssembler.Doc;
 
@@ -18,20 +20,18 @@ namespace LangAssembler.Doc;
 public abstract class Document : IDocument
 {
     /// <summary>
-    /// Gets the line number in the document.
+    /// Gets the type of line feed used in the document.
     /// </summary>
-    public int LineNumber { get; protected set; } = 1;
-
+    public DocumentLineFeed LineFeedType { get; }
+    
     /// <summary>
     /// Gets the column number within the line in the document.
     /// </summary>
     public int ColumnNumber { get; protected set; } = 1;
 
     /// <summary>
-    /// Gets the start index of the line in the document.
+    /// Represents a list of line information that can be edited. 
     /// </summary>
-    public long LineStart { get; protected set; } = -1;
-
     protected readonly List<DocumentLineInfo> EditableLineInfo = new ();
 
     /// <summary>
@@ -40,10 +40,9 @@ public abstract class Document : IDocument
     public IEnumerable<DocumentLineInfo> LineInfos => EditableLineInfo;
 
     /// <summary>
-    /// Gets if the stream has been fully read.
-    /// If true, this means <see cref="IDocument.LineInfos"/> is fully populated;
+    /// Gets the information for the current line in the document.
     /// </summary>
-    public bool FullyRead { get; protected set; } = false;
+    public DocumentLineInfo CurrentLineInfo { get; protected set; }
 
     /// <summary>
     /// Gets the encoding of the document stream.
@@ -58,16 +57,30 @@ public abstract class Document : IDocument
     /// <summary>
     /// Gets the current position within the document.
     /// </summary>
-    public int DocumentPosition
+    public long DocumentPosition
     {
-        get => (int)DocumentStream.Position;
+        get => DocumentStream.Position;
         protected set => DocumentStream.Seek(value, SeekOrigin.Begin);
     }
 
-    protected Document(Stream stream, Encoding encoding)
+    /// <summary>
+    /// Constructor that creates a new document.
+    /// </summary>
+    /// <param name="stream">The stream of the document.</param>
+    /// <param name="encoding">The encoding of the document stream.</param>
+    /// <param name="lineFeed">The type of line feed used in the document. (optional)</param>
+    protected Document(Stream stream, Encoding encoding, DocumentLineFeed lineFeed = DocumentLineFeed.NotPicky)
     {
+        if (stream.CanSeek)
+        {
+            throw new NotSupportedException("Document stream must be seekable");
+        }
+
+        stream.Seek(0, SeekOrigin.Begin);
+        CurrentLineInfo = CreateAndAddLine(1, 0);
         DocumentStream = stream;
         DocumentEncoding = encoding;
+        LineFeedType = lineFeed;
     }
     
     /// <summary>
@@ -100,10 +113,35 @@ public abstract class Document : IDocument
     /// </summary>
     protected virtual void IncrementLine()
     {
-        EditableLineInfo.Add(new DocumentLineInfo(this, LineNumber, LineStart, DocumentPosition));
-        LineNumber++;
-        ColumnNumber = 0;
-        LineStart = DocumentPosition + 1;
+        CurrentLineInfo = GetOrCreateLine(CurrentLineInfo.LineNumber + 1, DocumentPosition + 1);
     }
 
+    /// <summary>
+    /// Retrieves or, if necessary, creates line information for a specific line.
+    /// </summary>
+    /// <param name="lineNumber">The line number to get or create information for.</param>
+    /// <param name="lineStart">The position at which the line starts.</param>
+    /// <returns>The line information for the line number provided.</returns>
+    protected virtual DocumentLineInfo GetOrCreateLine(long lineNumber, long lineStart)
+    {
+        if (EditableLineInfo.FirstOrDefault(it => it.LineNumber == lineNumber) is { } lnInfo)
+        {
+            return lnInfo;
+        }
+
+        return CreateAndAddLine(lineNumber, lineStart);
+    }
+
+    /// <summary>
+    /// Create and add a line information for a specific line.
+    /// </summary>
+    /// <param name="lineNumber">The line number to create and add information for.</param>
+    /// <param name="lineStart">The position at which the line starts.</param>
+    /// <returns>The newly created line information for the line number provided.</returns>
+    private DocumentLineInfo CreateAndAddLine(long lineNumber, long lineStart)
+    {
+        var created = new DocumentLineInfo(this, lineNumber, lineStart);
+        EditableLineInfo.Add(created);
+        return created;
+    }
 }

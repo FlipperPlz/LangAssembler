@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using LangAssembler.Doc;
+using LangAssembler.Doc.Line;
 using LangAssembler.Options;
 using LangAssembler.Processors.Base;
 using Microsoft.Extensions.Logging;

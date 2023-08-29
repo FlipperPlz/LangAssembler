@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using LangAssembler.Doc.Enumerations;
+using LangAssembler.Doc.Line;
 
 namespace LangAssembler.Doc;
 
@@ -13,10 +15,9 @@ public interface IDocument : IDisposable
     public IEnumerable<DocumentLineInfo> LineInfos { get; }
     
     /// <summary>
-    /// Gets if the stream has been fully read.
-    /// If true, this means <see cref="LineInfos"/> is fully populated;
+    /// Gets the information for the current line in the document.
     /// </summary>
-    public bool FullyRead { get; }
+    public DocumentLineInfo CurrentLineInfo { get; }
     
     /// <summary>
     /// Gets the stream of the document.
@@ -29,18 +30,13 @@ public interface IDocument : IDisposable
     public Encoding DocumentEncoding { get; set; }
     
     /// <summary>
-    /// Gets the line number in the document.
+    /// Gets the type of line feed used in the document.
     /// </summary>
-    public int LineNumber { get; }
+    public DocumentLineFeed LineFeedType { get; }
     
     /// <summary>
-    /// Gets the column number within the line in the document.
+    /// Gets the current position within the document.
     /// </summary>
-    public int ColumnNumber { get; }
-    
-    /// <summary>
-    /// Gets the start index of the line in the document.
-    /// </summary>
-    public long LineStart { get; }
+    public long DocumentPosition { get; }
     
 }
