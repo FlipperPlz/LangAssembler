@@ -2,6 +2,7 @@
 using LangAssembler.Extensions;
 using LangAssembler.Internal;
 using LangAssembler.Options;
+using LangAssembler.Processors.Base;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors;
@@ -90,6 +91,9 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
     }
 
     ~StringProcessor() => Dispose(false);
+    
+    public string ToString(string? format, IFormatProvider? formatProvider) =>
+        Content.ToString(formatProvider);
 
     /// <summary>
     /// Jumps to a certain position and correctly sets <see cref="IStringProcessor.CurrentChar"/> and <see cref="IStringProcessor.PreviousChar"/>.

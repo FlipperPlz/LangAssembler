@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using LangAssembler.Options;
-using LangAssembler.Processors;
+using LangAssembler.Processors.Base;
 
 namespace LangAssembler.Extensions;
 

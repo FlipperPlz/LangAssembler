@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace LangAssembler.Document;
+namespace LangAssembler.Doc;
 
 /// <summary>
 /// Defines methods and properties to represent a structured document.
@@ -18,7 +18,6 @@ public interface IDocument : IDisposable
     /// </summary>
     public bool FullyRead { get; }
     
-    
     /// <summary>
     /// Gets the stream of the document.
     /// </summary>
@@ -28,11 +27,6 @@ public interface IDocument : IDisposable
     /// Gets the encoding of the document stream.
     /// </summary>
     public Encoding DocumentEncoding { get; set; }
-    
-    /// <summary>
-    /// Gets the current position within the document.
-    /// </summary>
-    public int DocumentPosition { get; set; }
     
     /// <summary>
     /// Gets the line number in the document.
@@ -47,10 +41,6 @@ public interface IDocument : IDisposable
     /// <summary>
     /// Gets the start index of the line in the document.
     /// </summary>
-    public int LineStart { get; }
+    public long LineStart { get; }
     
-    /// <summary>
-    /// Gets the length of the document.
-    /// </summary>
-    public int DocumentLength { get; }
 }

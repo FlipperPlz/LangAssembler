@@ -1,5 +1,6 @@
 ﻿using System.Text;
-using LangAssembler.Document;
+using LangAssembler.Doc;
+using LangAssembler.Processors.Base;
 
 namespace LangAssembler.Processors.Tracked;
 
@@ -9,28 +10,7 @@ namespace LangAssembler.Processors.Tracked;
 /// It implements members of IStringProcessor and IDocument interfaces.
 /// </summary>
 /// <seealso cref="IStringProcessor"/>
-/// <seealso cref="IDocument"/>
-public interface ITrackedStringProcessorBase : IStringProcessor, IDocument
+public interface ITrackedStringProcessorBase : IStringProcessor
 {
-    /// <summary>
-    /// Gets the current position within the document.
-    /// </summary>
-    int IDocument.DocumentPosition
-    {
-        get => Position;
-        set => JumpTo(value);
-    }
-
-    /// <summary>
-    /// Gets the length of the document.
-    /// </summary>
-    int IDocument.DocumentLength => Length;
-
-    Stream IDocument.DocumentStream => throw new NotImplementedException();
-    //
-    Encoding IDocument.DocumentEncoding
-    {
-        get => throw new NotImplementedException();
-        set => throw new NotImplementedException();
-    }
+    
 }

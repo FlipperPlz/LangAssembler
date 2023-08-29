@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace LangAssembler.Document;
+namespace LangAssembler.Doc;
 
 /// <summary>
 /// The Document class is an implementation of the IDocument interface, 
@@ -30,12 +30,8 @@ public abstract class Document : IDocument
     /// <summary>
     /// Gets the start index of the line in the document.
     /// </summary>
-    public int LineStart { get; protected set; } = -1;
+    public long LineStart { get; protected set; } = -1;
 
-    /// <summary>
-    /// Gets the length of the document.
-    /// </summary>
-    public int DocumentLength => (int)DocumentStream.Length;
     protected readonly List<DocumentLineInfo> EditableLineInfo = new ();
 
     /// <summary>
@@ -65,7 +61,7 @@ public abstract class Document : IDocument
     public int DocumentPosition
     {
         get => (int)DocumentStream.Position;
-        set => DocumentStream.Seek(value, SeekOrigin.Begin);
+        protected set => DocumentStream.Seek(value, SeekOrigin.Begin);
     }
 
     protected Document(Stream stream, Encoding encoding)
@@ -104,7 +100,7 @@ public abstract class Document : IDocument
     /// </summary>
     protected virtual void IncrementLine()
     {
-        EditableLineInfo.Insert(LineNumber, new DocumentLineInfo(LineStart..DocumentPosition));
+        EditableLineInfo.Add(new DocumentLineInfo(this, LineNumber, LineStart, DocumentPosition));
         LineNumber++;
         ColumnNumber = 0;
         LineStart = DocumentPosition + 1;

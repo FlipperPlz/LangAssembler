@@ -1,6 +1,6 @@
 ﻿using LangAssembler.Internal;
 
-namespace LangAssembler.Processors;
+namespace LangAssembler.Processors.Base;
 
 /// <summary>
 /// Provides an interface for a simple char by char reader, relies on a sliding window to keep track
@@ -8,11 +8,6 @@ namespace LangAssembler.Processors;
 /// </summary>
 public interface IStringProcessor : IDisposable, IFormattable, ILaLoggable<IStringProcessor>
 {
-    /// <summary>
-    /// This is the content of the stepper.
-    /// </summary>
-    /// <remarks>Sometimes referred to as the buffer.</remarks>
-    protected string Content { get; }
     
     /// <summary>
     /// This is the length of the content loaded.
@@ -49,18 +44,7 @@ public interface IStringProcessor : IDisposable, IFormattable, ILaLoggable<IStri
     /// </summary>
     /// <param name="content">The new content to write to buffer.</param>
     public void ResetStepper(string? content = null);
-    
-    /// <summary>
-    /// Simple interface level getter for Content.
-    /// </summary>
-    string IFormattable.ToString(string? format, IFormatProvider? formatProvider) => Content;
 
-    
-    /// <summary>
-    /// Gets a range of text from a stepper.
-    /// </summary>
-    /// <param name="range">The range to retrieve</param>
-    /// <returns>Substring of <see cref="Content"/></returns>
-    string this[Range range] => Content[range];
+    string this[Range range] { get; }
 }
 

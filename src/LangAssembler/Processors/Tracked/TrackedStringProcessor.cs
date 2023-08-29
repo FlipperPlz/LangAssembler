@@ -1,6 +1,7 @@
 ﻿using System.Text;
-using LangAssembler.Document;
+using LangAssembler.Doc;
 using LangAssembler.Options;
+using LangAssembler.Processors.Base;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors.Tracked;
@@ -59,7 +60,7 @@ public class TrackedStringProcessor : StringProcessor, ITrackedStringProcessorBa
     /// </summary>
     protected virtual void IncrementLine()
     {
-        EditableLineInfo.Insert(LineNumber, new DocumentLineInfo(LineStart..Position));
+        EditableLineInfo.Insert(LineNumber, new DocumentLineInfo(null!, LineNumber, LineStart, Position));
         LineNumber++;
         ColumnNumber = 0;
         LineStart = Position + 1;

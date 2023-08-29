@@ -1,12 +1,11 @@
 ﻿using System.Text;
 using LangAssembler.Lexer.Base;
-using LangAssembler.Lexer.Extensions;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
 using LangAssembler.Lexer.Providers;
 using LangAssembler.Options;
-using LangAssembler.Processors;
+using LangAssembler.Processors.Base;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Lexer;

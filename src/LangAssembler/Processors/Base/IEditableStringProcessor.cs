@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using LangAssembler.Options;
 
-namespace LangAssembler.Processors;
+namespace LangAssembler.Processors.Base;
 
 /// <summary>
 /// Implementation of IBisStringStepper with the added ability to edit data as you're stepping through it.

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using LangAssembler.Extensions;
 using LangAssembler.Options;
+using LangAssembler.Processors.Base;
 using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors.Tracked;

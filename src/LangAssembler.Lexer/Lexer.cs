@@ -8,7 +8,7 @@ using LangAssembler.Lexer.Models.Match;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Options;
-using LangAssembler.Processors;
+using LangAssembler.Processors.Base;
 using LangAssembler.Processors.Tracked;
 using Microsoft.Extensions.Logging;
 
