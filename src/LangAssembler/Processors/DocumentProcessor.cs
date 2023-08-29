@@ -15,7 +15,7 @@ public class DocumentProcessor : Document, IDocumentProcessor
     /// <summary>
     /// Gets the reader for the current document.
     /// </summary>
-    public readonly StreamReader DocumentReader;
+    public readonly BinaryReader DocumentReader;
 
     /// <summary>
     /// Gets the current character in the content at the Position. If this is null there are one of three reasons:
@@ -31,23 +31,61 @@ public class DocumentProcessor : Document, IDocumentProcessor
     /// </summary>
     public int? PreviousChar { get; protected set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DocumentProcessor"/> class using a <see cref="Stream"/> and a logger.
+    /// </summary>
+    /// <param name="stream">The stream containing the document.</param>
+    /// <param name="encoding">The character encoding to use.</param>
+    /// <param name="logger">The logger instance.</param>
     public DocumentProcessor(Stream stream, Encoding encoding, ILogger<IStringProcessor>? logger) : base(stream, encoding)
     {
-        DocumentReader = new StreamReader(DocumentStream, DocumentEncoding, true);
         Logger = logger;
+        DocumentReader = new BinaryReader(DocumentStream, DocumentEncoding, true);
+    }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DocumentProcessor"/> class using a <see cref="BinaryReader"/> and a logger.
+    /// </summary>
+    /// <param name="reader">The reader for the document.</param>
+    /// <param name="encoding">The character encoding to use.</param>
+    /// <param name="logger">The logger instance.</param>
+    public DocumentProcessor(BinaryReader reader, Encoding encoding, ILogger<IStringProcessor>? logger) : base(reader.BaseStream, encoding)
+    {
+        Logger = logger;
+        DocumentReader = reader;
+        ResetStepper();
     }
 
+    /// <summary>
+    /// Finalizes an instance of the <see cref="DocumentProcessor"/> class.
+    /// </summary>
+    ~DocumentProcessor()
+    {
+        Dispose(true);
+    }
+
+    /// <summary>Formats the value of the current instance using the specified format.</summary>
+    /// <param name="format">The format to use.
+    /// -or-
+    /// A null reference (<see langword="Nothing" /> in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation.</param>
+    /// <param name="formatProvider">The provider to use to format the value.
+    /// -or-
+    /// A null reference (<see langword="Nothing" /> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
+    /// <returns>The value of the current instance in the specified format.</returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        //TODO make lazy virtual; EditableDocumentProcessor will let us know when edits were made
+        //fixme make lazy virtual; EditableDocumentProcessor will let us know when edits were made
         var position = DocumentPosition;
         DocumentStream.Seek(0, SeekOrigin.Begin);
-        var contents = DocumentReader.ReadToEnd();
+        var contents = DocumentEncoding.GetString(DocumentReader.ReadBytes((int)DocumentStream.Length));
         DocumentPosition = position;
         return contents;
     }
 
+    /// <summary>
+    /// Resets the contents of the stepper and resets the window.
+    /// </summary>
+    /// <param name="content">The new content to write to buffer.</param>
     public void ResetStepper(string? content = null)
     {
         if (!DocumentStream.CanWrite && content is not null)
@@ -69,8 +107,23 @@ public class DocumentProcessor : Document, IDocumentProcessor
         ColumnNumber = 1;
     }
 
-    public string this[Range range] => throw new NotImplementedException();
-
+    /// <summary>
+    /// Gets a string that represents a specified substring in this document.
+    /// </summary>
+    /// <value>The string at the specified range in this document.</value>
+    public string this[Range range]
+    {
+        get
+        {
+            int end = range.End.Value, start = range.Start.Value;
+            var length = end - start;
+            var position = DocumentPosition;
+            DocumentPosition = start;
+            var contents = DocumentReader.ReadBytes(length);
+            DocumentPosition = position;
+            return DocumentEncoding.GetString(contents);
+        }
+    }
 
     /// <summary>
     /// Releases the unmanaged resources used by the document and optionally releases the managed resources.
@@ -87,6 +140,15 @@ public class DocumentProcessor : Document, IDocumentProcessor
         }
     }
 
+    /// <summary>
+    /// Jumps to a certain position within the document and correctly sets the state of the processor,
+    /// including factors such as the current line and column numbers.
+    /// </summary>
+    /// <param name="position">The position to jump to within the document.</param>
+    /// <param name="assumeSameLine">
+    /// If set to true, the method will assume that the new position is on the same line as the current position.
+    /// </param>
+    /// <returns>The new position within the document, or null if the jump was not successful.</returns>
     public int? JumpTo(long position, bool assumeSameLine)
     {
         if (position < 0 || position >= DocumentStream.Length)
@@ -102,7 +164,6 @@ public class DocumentProcessor : Document, IDocumentProcessor
 
         if(assumeSameLine)
         {
-            // If we assume position stays on the same line, just increase column number by diff
             var columnDiff = position - (DocumentPosition - 1);
             ColumnNumber += (int)columnDiff;
         }
@@ -113,4 +174,5 @@ public class DocumentProcessor : Document, IDocumentProcessor
 
         return CurrentChar;
     }
+    
 }

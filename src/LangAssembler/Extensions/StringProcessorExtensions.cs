@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using LangAssembler.Options;
-using LangAssembler.Processors;
 using LangAssembler.Processors.Base;
 
 namespace LangAssembler.Extensions;
@@ -37,7 +36,7 @@ public static class StringProcessorExtensions
     /// </summary>
     /// <param name="processor">The processor instance to act upon.</param>
     /// <param name="range">The range to retrieve</param>
-    /// <returns>Substring of <see cref="IStringProcessor.Content"/></returns>
+    /// <returns>Substring of processor contents.</returns>
     public static string GetRange(this IStringProcessor processor, Range range) => processor[range];
     
     /// <summary>
@@ -196,7 +195,8 @@ public static class StringProcessorExtensions
     /// </summary>
     /// <param name="processor">The string processor</param>
     /// <returns>The character that was erased, or null if no character was removed.</returns>
-    public static int? ErasePrevious(this IEditableStringProcessor processor) => EraseChar(processor, (int) processor.Position - 1);
+    public static int? ErasePrevious(this IEditableStringProcessor processor) => 
+        EraseChar(processor, processor.Position - 1);
 
     /// <summary>
     /// Erases a specific character from the string processor.

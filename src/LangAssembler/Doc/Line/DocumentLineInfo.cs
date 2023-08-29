@@ -55,7 +55,12 @@ public class DocumentLineInfo : IDocumentLineInfo
         Document = document;
         LineNumber = lineNumber;
     }
-
+    
+    /// <summary>
+    /// Updates line start, end and recalculates the line length.
+    /// </summary>
+    /// <param name="lineStart">The start of the line.</param>
+    /// <param name="lineEnd">The end of the line.</param>
     public void ChangeLineIndex(long lineStart, long lineEnd)
     {
         
@@ -83,6 +88,11 @@ public class DocumentLineInfo : IDocumentLineInfo
     public bool IsInLine(long position) =>
         position >= LineStart && position <= LineEnd;
 
+    /// <summary>
+    /// Compares the current line info with other line info by line number.
+    /// </summary>
+    /// <param name="other">The other line info to compare.</param>
+    /// <returns>A value indicating the order of the objects being compared.</returns>
     public int CompareTo(IDocumentLineInfo? other)
     {
         if (ReferenceEquals(this, other)) return 0;

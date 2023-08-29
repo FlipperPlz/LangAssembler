@@ -1,8 +1,5 @@
 ﻿using LangAssembler.Doc;
 using LangAssembler.Doc.Line;
-using LangAssembler.Processors;
-using LangAssembler.Processors.Tracked;
-
 namespace LangAssembler.Extensions;
 
 public static class DocumentExtensions

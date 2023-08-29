@@ -121,7 +121,8 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
         PreviousChar = null;
         CurrentChar = null;
     }
-    
+
+    public override string ToString() => Content;
     
     /// <summary>
     /// Gets the substring from the content with a specified range.
