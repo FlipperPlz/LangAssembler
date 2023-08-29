@@ -31,13 +31,13 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
     /// 2. Our position is after the buffer. (EOF)
     /// 3. Our buffer is empty, what are you doing! D:
     /// </summary>
-    public virtual char? CurrentChar { get; protected set; }
+    public virtual int? CurrentChar { get; protected set; }
 
     /// <summary>
     /// Gets the character in the content just before the Position. Nullability is used the same way as its used in
     /// <see cref="IStringProcessor.CurrentChar"/>.
     /// </summary>
-    public virtual char? PreviousChar { get; protected set; }
+    public virtual int? PreviousChar { get; protected set; }
     
     private bool _disposed;
 
@@ -99,7 +99,7 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
     /// Jumps to a certain position and correctly sets <see cref="IStringProcessor.CurrentChar"/> and <see cref="IStringProcessor.PreviousChar"/>.
     /// </summary>
     /// <param name="position">The position to jump to.</param>
-    public virtual char? JumpTo(int position)
+    public virtual int? JumpTo(int position)
     {
         Position = position;
         PreviousChar = Content.GetOrNull(position - 1);

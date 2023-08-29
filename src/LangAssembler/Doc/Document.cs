@@ -32,12 +32,12 @@ public abstract class Document : IDocument
     /// <summary>
     /// Represents a list of line information that can be edited. 
     /// </summary>
-    protected readonly List<DocumentLineInfo> EditableLineInfo = new ();
+    private readonly List<DocumentLineInfo> _editableLineInfo = new ();
 
     /// <summary>
     /// Gets an enumeration of line information for each line in the document.
     /// </summary>
-    public IEnumerable<DocumentLineInfo> LineInfos => EditableLineInfo;
+    public IEnumerable<DocumentLineInfo> LineInfos => _editableLineInfo;
 
     /// <summary>
     /// Gets the information for the current line in the document.
@@ -82,6 +82,14 @@ public abstract class Document : IDocument
         DocumentEncoding = encoding;
         LineFeedType = lineFeed;
     }
+
+    /// <summary>
+    /// Finalizer that ensures the document's resources are released.
+    /// </summary>
+    ~Document()
+    {
+        Dispose();
+    }
     
     /// <summary>
     /// Releases all resources used by the document.
@@ -117,6 +125,28 @@ public abstract class Document : IDocument
     }
 
     /// <summary>
+    /// Inserts or replaces a DocumentLineInfo instance into _editableLineInfo.
+    /// _editableLineInfo is sorted by DocumentLineInfo.LineNumber. If an item with the same
+    /// LineNumber already exists in _editableLineInfo, it is replaced.
+    /// </summary>
+    /// <param name="lineInfo">The DocumentLineInfo instance to be inserted or replaced.</param>
+    /// <returns>The inserted or replaced DocumentLineInfo instance.</returns>
+    protected DocumentLineInfo InsertLine(DocumentLineInfo lineInfo)
+    {
+        var index = _editableLineInfo.BinarySearch(lineInfo);
+        switch (index)
+        {
+            case < 0: 
+                _editableLineInfo.Insert(~index, lineInfo);
+                break;
+            default:
+                _editableLineInfo[index] = lineInfo;
+                break;       
+        }
+        return lineInfo;
+    }
+
+    /// <summary>
     /// Retrieves or, if necessary, creates line information for a specific line.
     /// </summary>
     /// <param name="lineNumber">The line number to get or create information for.</param>
@@ -124,7 +154,7 @@ public abstract class Document : IDocument
     /// <returns>The line information for the line number provided.</returns>
     protected virtual DocumentLineInfo GetOrCreateLine(long lineNumber, long lineStart)
     {
-        if (EditableLineInfo.FirstOrDefault(it => it.LineNumber == lineNumber) is { } lnInfo)
+        if (_editableLineInfo.FirstOrDefault(it => it.LineNumber == lineNumber) is { } lnInfo)
         {
             return lnInfo;
         }
@@ -133,15 +163,23 @@ public abstract class Document : IDocument
     }
 
     /// <summary>
-    /// Create and add a line information for a specific line.
+    /// Resets the document by clearing all lineInfo instances and positions.
     /// </summary>
-    /// <param name="lineNumber">The line number to create and add information for.</param>
-    /// <param name="lineStart">The position at which the line starts.</param>
-    /// <returns>The newly created line information for the line number provided.</returns>
-    private DocumentLineInfo CreateAndAddLine(long lineNumber, long lineStart)
+    protected void ResetDocument()
     {
-        var created = new DocumentLineInfo(this, lineNumber, lineStart);
-        EditableLineInfo.Add(created);
-        return created;
+        DocumentPosition = 0;
+        _editableLineInfo.Clear();
+        CurrentLineInfo = CreateAndAddLine(1, DocumentPosition);
     }
+
+    /// <summary>
+    /// Creates a new DocumentLineInfo with given lineNumber and lineStart, 
+    /// and adds it to the _editableLineInfo list using InsertLine method.
+    /// </summary>
+    /// <param name="lineNumber">The line number for the new DocumentLineInfo.</param>
+    /// <param name="lineStart">The line start for the new DocumentLineInfo.</param>
+    /// <returns>The created DocumentLineInfo.</returns>
+    private DocumentLineInfo CreateAndAddLine(long lineNumber, long lineStart) =>
+        InsertLine(new DocumentLineInfo(this, lineNumber, lineStart));
+    
 }

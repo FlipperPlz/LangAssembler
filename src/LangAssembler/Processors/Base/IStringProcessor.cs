@@ -25,19 +25,19 @@ public interface IStringProcessor : IDisposable, IFormattable, ILaLoggable<IStri
     /// 2. Our position is after the buffer. (EOF)
     /// 3. Our buffer is empty, what are you doing! D:
     /// </summary>
-    public char? CurrentChar { get; }
+    public int? CurrentChar { get; }
 
     /// <summary>
     /// Gets the character in the content just before the Position. Nullability is used the same way as its used in
     /// <see cref="CurrentChar"/>.
     /// </summary>
-    public char? PreviousChar { get; }
+    public int? PreviousChar { get; }
     
     /// <summary>
     /// Jumps to a certain position and correctly sets <see cref="CurrentChar"/> and <see cref="PreviousChar"/>.
     /// </summary>
     /// <param name="position">The position to jump to.</param>
-    public char? JumpTo(int position);
+    public int? JumpTo(int position);
     
     /// <summary>
     /// Resets the contents of the stepper and resets the window.

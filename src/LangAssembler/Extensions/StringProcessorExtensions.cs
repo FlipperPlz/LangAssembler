@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using LangAssembler.Options;
+using LangAssembler.Processors;
 using LangAssembler.Processors.Base;
 
 namespace LangAssembler.Extensions;
@@ -15,7 +16,7 @@ public static class StringProcessorExtensions
     /// <param name="processor">The processor instance to act upon.</param>
     /// <param name="count">Number of positions to move forward.</param>
     /// <returns><see cref="IStringProcessor.CurrentChar"/></returns>
-    public static char? MoveForward(this IStringProcessor processor, int count = 1)
+    public static int? MoveForward(this IStringProcessor processor, int count = 1)
     {
         return processor.JumpTo(processor.Position + count);
     }
@@ -26,7 +27,7 @@ public static class StringProcessorExtensions
     /// <param name="processor">The processor instance to act upon.</param>
     /// <param name="count">Number of positions to move backward.</param>
     /// <returns><see cref="IStringProcessor.CurrentChar"/></returns>
-    public static char? MoveBackward(this IStringProcessor processor, int count = 1)
+    public static int? MoveBackward(this IStringProcessor processor, int count = 1)
     {
         return processor.JumpTo(processor.Position - count);
     }
@@ -177,7 +178,7 @@ public static class StringProcessorExtensions
     /// </summary>
     /// <param name="processor">The string processor</param>
     /// <returns>The character that was erased, or null if no character was removed.</returns>
-    public static char? EraseCurrent(this IEditableStringProcessor processor) => EraseChar(processor, processor.Position);
+    public static int? EraseCurrent(this IEditableStringProcessor processor) => EraseChar(processor, processor.Position);
     
     
     /// <summary>
@@ -195,7 +196,7 @@ public static class StringProcessorExtensions
     /// </summary>
     /// <param name="processor">The string processor</param>
     /// <returns>The character that was erased, or null if no character was removed.</returns>
-    public static char? ErasePrevious(this IEditableStringProcessor processor) => EraseChar(processor, processor.Position - 1);
+    public static int? ErasePrevious(this IEditableStringProcessor processor) => EraseChar(processor, (int) processor.Position - 1);
 
     /// <summary>
     /// Erases a specific character from the string processor.
@@ -203,7 +204,7 @@ public static class StringProcessorExtensions
     /// <param name="processor">The string processor</param>
     /// <param name="position">The position of the character to erase.</param>
     /// <returns>The character that was erased, or null if no character was removed.</returns>
-    public static char? EraseChar(this IEditableStringProcessor processor, int position)
+    public static int? EraseChar(this IEditableStringProcessor processor, int position)
     {
         RemoveRange(processor, position..position, out _);
         return processor.JumpTo(processor.Position);

@@ -43,7 +43,7 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// Looks for a valid token down the chain of inheritance.
     /// </remarks>
     /// <inheritdoc cref="Lexer.GetNextMatch"/>
-    protected sealed override ITokenType GetNextMatch(int tokenStart, char? currentChar)
+    protected sealed override ITokenType GetNextMatch(int tokenStart, int? currentChar)
     {
         foreach (var set in TokenInheritanceOrder)
         {
@@ -64,5 +64,5 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// <param name="tokenStart">The start position of the token.</param>
     /// <param name="currentChar">The current character being processed.</param>
     /// <returns>Returns the matched token type.</returns>
-    protected abstract ITokenType GetNextMatch(ITokenTypeSet set, int tokenStart, char? currentChar);
+    protected abstract ITokenType GetNextMatch(ITokenTypeSet set, int tokenStart, int? currentChar);
 }

@@ -80,7 +80,7 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <returns>
     /// An instance of the <see cref="ITokenType"/> interface, representing the type of the next matched token.
     /// </returns>
-    protected virtual ITokenType GetNextMatch(int tokenStart, char? currentChar) => 
+    protected virtual ITokenType GetNextMatch(int tokenStart, int? currentChar) => 
         LocateNextMatch(tokenStart, currentChar);
 
     
@@ -91,7 +91,7 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <param name="tokenStart">The starting position to begin search.</param>
     /// <param name="currentChar">The current character under analysis.</param>
     /// <returns>The type of the next token that was matched.</returns>
-    protected abstract ITokenType LocateNextMatch(int tokenStart, char? currentChar);
+    protected abstract ITokenType LocateNextMatch(int tokenStart, int? currentChar);
     
     /// <summary>
     /// Handles the TokenMatched event. 

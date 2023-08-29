@@ -4,20 +4,27 @@
 /// <summary>
 /// Represents detailed information about a line of document.
 /// </summary>
-public class DocumentLineInfo
-{    
+public class DocumentLineInfo : IDocumentLineInfo
+{
     /// <summary>
-    /// Gets the document where this line was found.
+    /// Gets the document where the line info was found
     /// </summary>
-    public readonly IDocument Document;
-    
+    public IDocument Document { get; }
+
     /// <summary>
-    /// The number of the line in the document.
+    /// Returns the line number
     /// </summary>
-    public readonly long LineNumber;
-    
-    public long LineStart;
-    public long LineEnd;
+    public long LineNumber { get; }
+
+    /// <summary>
+    /// Gets or sets the start of the line
+    /// </summary>
+    public long LineStart { get; protected set; }
+
+    /// <summary>
+    /// Gets or sets the end of the line
+    /// </summary>
+    public long LineEnd { get; protected set; }
 
     /// <summary>
     /// Gets the length of the line.
@@ -57,6 +64,11 @@ public class DocumentLineInfo
         LineLength = LineEnd - LineStart;
     }
 
+    
+    /// <summary>
+    /// Sets the end of the line and recalculates the line length
+    /// </summary>
+    /// <param name="lineEnd">The end of the line</param>
     public void InitializeEnd(long lineEnd)
     {
         LineEnd = lineEnd;
@@ -71,4 +83,9 @@ public class DocumentLineInfo
     public bool IsInLine(long position) =>
         position >= LineStart && position <= LineEnd;
 
+    public int CompareTo(IDocumentLineInfo? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        return other is null ? 1 : LineNumber.CompareTo(other.LineNumber);
+    }
 }
