@@ -8,7 +8,8 @@ public struct ALexRuleReference : IALexLiteral
     public IALexFile LexAsmFile { get; }
     public string Value { get; }
     public ALexValueType ValueType => ALexValueType.RuleName;
-    
+    public override string ToString() => Value;
+
     public ALexRuleReference(string value, IALexFile root)
     {
         LexAsmFile = root;

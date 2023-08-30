@@ -19,5 +19,13 @@ public class ALexMetadata : IALexMetadata
         Properties = properties;
     }
 
+    public override string ToString() => $"[|\n{
+        string.Join("\n",
+            Properties.Select(
+                it => $"{it.Key} ::= {it.Value};"
+            )
+        )
+    }\n|]";
+
     public IALexValue? GetValue(string name) => Properties.GetValueOrDefault(name);
 }

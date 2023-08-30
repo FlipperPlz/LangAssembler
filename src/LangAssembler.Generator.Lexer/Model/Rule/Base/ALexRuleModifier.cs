@@ -5,5 +5,5 @@ public enum ALexRuleModifier : byte
 {
     None = 0,
     Private = 1,
-    External = 2
+    External = 2,
 }

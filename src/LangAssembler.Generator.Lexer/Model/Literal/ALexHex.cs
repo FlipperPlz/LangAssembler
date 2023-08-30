@@ -8,7 +8,8 @@ public struct ALexHex : IALexLiteral
     public IALexFile LexAsmFile { get; }
     public string Value { get; }
     public ALexValueType ValueType => ALexValueType.Hex;
-    
+    public override string ToString() => Value;
+
     public ALexHex(string value, IALexFile root)
     {
         LexAsmFile = root;

@@ -14,6 +14,7 @@ public struct ALexGroupedElement : IALexGroupedElement
         LexAsmFile = lexAsmFile;
         Elements = elements;
     }
+    public override string ToString() => ((IALexValue)this).Value;
 
     
 }

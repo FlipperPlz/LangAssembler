@@ -13,5 +13,6 @@ public struct ALexOptionalElement : IALexOptionalElement
         LexAsmFile = root;
         Element = element;
     }
+    public override string ToString() => ((IALexValue)this).Value;
 
 }

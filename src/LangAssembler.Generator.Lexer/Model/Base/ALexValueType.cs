@@ -1,5 +1,6 @@
 ﻿namespace LangAssembler.Generator.Lexer.Model.Base;
 
+[Flags]
 public enum ALexValueType
 {
     String,
@@ -8,5 +9,6 @@ public enum ALexValueType
     Wildcard,
     Repeat,
     Optional,
-    Grouped
+    Grouped,
+    Conditional
 }

@@ -3,4 +3,6 @@
 public interface IALexLanguageElement
 {
     IALexFile LexAsmFile { get; }
+    
+    
 }

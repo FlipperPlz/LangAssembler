@@ -14,4 +14,6 @@ public struct ALexString : IALexLiteral
         LexAsmFile = root;
         Value = value;
     }
+
+    public override string ToString() => Value;
 }

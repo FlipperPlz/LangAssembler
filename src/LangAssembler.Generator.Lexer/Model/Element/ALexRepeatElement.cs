@@ -13,5 +13,6 @@ public struct ALexRepeatElement : IALexRepeatElement
         LexAsmFile = root;
         Element = element;
     }
+    public override string ToString() => ((IALexValue)this).Value;
 
 }

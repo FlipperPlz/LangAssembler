@@ -13,5 +13,6 @@ public struct ALexWildcardElement : IALexWildcardElement
         LexAsmFile = root;
         Element = element;
     }
+    public override string ToString() => ((IALexValue)this).Value;
 
 }
