@@ -3,7 +3,7 @@ using LangAssembler.Generator.Lexer.Model.Metadata.Base;
 
 namespace LangAssembler.Generator.Lexer.Model.Base;
 
-public interface IALexAnnotatedElement : IALexElement
+public interface IALexAnnotatedLanguageElement : IALexLanguageElement
 {
     public IALexMetadata Metadata { get; }
 }

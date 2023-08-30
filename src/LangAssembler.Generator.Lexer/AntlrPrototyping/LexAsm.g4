@@ -2,31 +2,31 @@
 
 root:
     metadata?
-    typeDefinition*
+    rule*
     EOF;
 
-metaProperty: ID ASSIGN literal;
-typeDefinition: ID metadata? ASSIGN typeAssignment SCOLON;
+metadata: LMETA metaProperty* RMETA;
+metaProperty: ID ASSIGN literal SCOLON;
+rule: ruleModifier? ID metadata? ASSIGN elementAtom SCOLON;
 
-metadata: LMETA (
-    metaProperty*
-) RMETA;
-
-typeAssignment: element;
-element: elementAtom (BAR elementAtom)*;
 elementAtom: 
-     elementAtom ASTERISK        #zeroOrMore      |
-     elementAtom PLUS            #oneOrMore       |
-     elementAtom QUESTION        #oneOrNone       |
-     LSQUARE elementAtom RSQUARE #optionalElement |
-     LPAREN  elementAtom RPAREN  #groupElement    |
-     literal                     #rawElement      ;
-
+     elementAtom ASTERISK        #wildcardElement  |
+     elementAtom PLUS            #repeatElement    |
+     LSQUARE elementAtom RSQUARE #optionalElement  |
+     LPAREN  elementAtom RPAREN  #groupElement     |
+     literal                     #rawElement       |
+     literal (BAR elementAtom)*  #elementOrElement ;     
 literal: 
-    STRING      |
-    HEX_NUMBER  |
-    ID          ;
+     STRING                      #string           |
+     HEX_NUMBER                  #numeric          |
+     ID                          #reference        ;
+     
+ruleModifier:
+     PRIVATE                     #privateMod       |
+     EXTERNAL                    #externalMod      ;
 
+PRIVATE: 'private';
+EXTERNAL: 'external';
 HEX_NUMBER : '0' [xX] [0-9a-fA-F]+ ;
 STRING: '"' (ESCAPED_CHAR | ~["\\])* '"';
 ESCAPED_CHAR: '\\' [btnfr"'\\];
@@ -41,7 +41,6 @@ RSQUARE:  ']';
 LCURLY:   '{';
 RCURLY:   '}';
 SCOLON:   ';';
-QUESTION: '?';
 LMETA:    '[|';
 RMETA:    '|]';
 ASSIGN:   '::=';

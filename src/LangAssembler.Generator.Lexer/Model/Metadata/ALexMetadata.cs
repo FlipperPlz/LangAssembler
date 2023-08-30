@@ -6,7 +6,7 @@ namespace LangAssembler.Generator.Lexer.Model.Metadata;
 
 public class ALexMetadata : IALexMetadata
 {
-    public readonly Dictionary<string, IALexLiteral> Properties = new ();
+    public readonly Dictionary<string, IALexValue> Properties = new ();
     public IALexFile LexAsmFile { get; }
     
     public ALexMetadata(IALexFile root)
@@ -14,10 +14,10 @@ public class ALexMetadata : IALexMetadata
         LexAsmFile = root;
     }
     
-    public ALexMetadata(Dictionary<string, IALexLiteral> properties, IALexFile root) : this(root)
+    public ALexMetadata(Dictionary<string, IALexValue> properties, IALexFile root) : this(root)
     {
         Properties = properties;
     }
 
-    public IALexLiteral? GetValue(string name) => Properties.GetValueOrDefault(name);
+    public IALexValue? GetValue(string name) => Properties.GetValueOrDefault(name);
 }

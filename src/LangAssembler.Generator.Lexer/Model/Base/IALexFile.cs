@@ -1,6 +1,6 @@
 ﻿namespace LangAssembler.Generator.Lexer.Model.Base;
 
-public interface IALexFile : IALexAnnotatedElement
+public interface IALexFile : IALexAnnotatedLanguageElement
 {
-    IALexFile IALexElement.LexAsmFile => this;
+    IALexFile IALexLanguageElement.LexAsmFile => this;
 }

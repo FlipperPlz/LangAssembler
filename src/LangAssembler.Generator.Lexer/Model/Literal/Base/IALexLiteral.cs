@@ -2,8 +2,7 @@
 
 namespace LangAssembler.Generator.Lexer.Model.Literal.Base;
 
-public interface IALexLiteral : IALexElement
+public interface IALexLiteral : IALexValue
 {
-    string Value { get; }
-    ALexValueType ValueType { get; }
+    ALexLiteralType LiteralType => (ALexLiteralType)ValueType;
 }
