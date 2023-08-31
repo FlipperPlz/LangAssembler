@@ -17,7 +17,7 @@ namespace LangAssembler.Doc;
 /// within the document. The document maintains a collection of line information (LineInfos)
 /// which get populated as the document is read.  
 /// </remarks>
-public abstract class Document : IDocument
+public abstract class DocumentOld : IDocumentOld
 {
     /// <summary>
     /// Gets the type of line feed used in the document.
@@ -69,7 +69,7 @@ public abstract class Document : IDocument
     /// <param name="stream">The stream of the document.</param>
     /// <param name="encoding">The encoding of the document stream.</param>
     /// <param name="lineFeed">The type of line feed used in the document. (optional)</param>
-    protected Document(Stream stream, Encoding encoding, DocumentLineFeed lineFeed = DocumentLineFeed.NotPicky)
+    protected DocumentOld(Stream stream, Encoding encoding, DocumentLineFeed lineFeed = DocumentLineFeed.NotPicky)
     {
         if (stream.CanSeek)
         {
@@ -86,7 +86,7 @@ public abstract class Document : IDocument
     /// <summary>
     /// Finalizer that ensures the document's resources are released.
     /// </summary>
-    ~Document()
+    ~DocumentOld()
     {
         Dispose();
     }

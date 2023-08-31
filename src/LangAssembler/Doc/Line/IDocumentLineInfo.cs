@@ -8,7 +8,7 @@ public interface IDocumentLineInfo : IComparable<IDocumentLineInfo>
     /// <summary>
     /// Gets the document where the line info was found
     /// </summary>
-    IDocument Document { get; }
+    IDocumentOld DocumentOld { get; }
     
     /// <summary>
     /// Returns the line number

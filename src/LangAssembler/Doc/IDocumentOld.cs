@@ -7,7 +7,7 @@ namespace LangAssembler.Doc;
 /// <summary>
 /// Defines methods and properties to represent a structured document.
 /// </summary>
-public interface IDocument : IDisposable
+public interface IDocumentOld : IDisposable
 {
     /// <summary>
     /// Gets an enumeration of line information for each line in the document.

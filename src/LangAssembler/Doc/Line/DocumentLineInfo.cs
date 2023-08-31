@@ -9,7 +9,7 @@ public class DocumentLineInfo : IDocumentLineInfo
     /// <summary>
     /// Gets the document where the line info was found
     /// </summary>
-    public IDocument Document { get; }
+    public IDocumentOld DocumentOld { get; }
 
     /// <summary>
     /// Returns the line number
@@ -34,25 +34,25 @@ public class DocumentLineInfo : IDocumentLineInfo
     /// <summary>
     /// Initializes a new instance of <see cref="DocumentLineInfo"/>, setting the start, end, and length of the line in a document.
     /// </summary>
-    /// <param name="document">The document this line was found in.</param>
+    /// <param name="documentOld">The document this line was found in.</param>
     /// <param name="lineNumber">The line number.</param>
     /// <param name="lineStart">Start position of the line in a document.</param>
     /// <param name="lineEnd">End position of the line in a document.</param>
-    public DocumentLineInfo(IDocument document, long lineNumber, long lineStart, long lineEnd) : this(document, lineNumber)
+    public DocumentLineInfo(IDocumentOld documentOld, long lineNumber, long lineStart, long lineEnd) : this(documentOld, lineNumber)
     {
         ChangeLineIndex(lineStart, lineEnd);
     }
     
-    public DocumentLineInfo(IDocument document, long lineNumber, long lineStart) : this(document, lineNumber)
+    public DocumentLineInfo(IDocumentOld documentOld, long lineNumber, long lineStart) : this(documentOld, lineNumber)
     {
-        Document = document;
+        DocumentOld = documentOld;
         LineNumber = lineNumber;
         LineStart = lineStart;
     }
     
-    public DocumentLineInfo(IDocument document, long lineNumber)
+    public DocumentLineInfo(IDocumentOld documentOld, long lineNumber)
     {
-        Document = document;
+        DocumentOld = documentOld;
         LineNumber = lineNumber;
     }
     

@@ -8,7 +8,7 @@ namespace LangAssembler.Processors.Base;
 /// from both an IDocument and IStringProcessor.
 /// This interface provides methods for manipulating and moving through a document during processing.
 /// </summary>
-public interface IDocumentProcessor : IDocument, IStringProcessor
+public interface IDocumentOldProcessor : IDocumentOld, IStringProcessor
 {
     /// <summary>
     /// This is the length of the content loaded.

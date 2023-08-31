@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Processors;
 
-public class DocumentProcessor : Document, IDocumentProcessor
+public class DocumentOldProcessor : DocumentOld, IDocumentOldProcessor
 {
     /// <summary>
     /// Gets the logger that is used by this object for writing log messages.
@@ -32,24 +32,24 @@ public class DocumentProcessor : Document, IDocumentProcessor
     public int? PreviousChar { get; protected set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DocumentProcessor"/> class using a <see cref="Stream"/> and a logger.
+    /// Initializes a new instance of the <see cref="DocumentOldProcessor"/> class using a <see cref="Stream"/> and a logger.
     /// </summary>
     /// <param name="stream">The stream containing the document.</param>
     /// <param name="encoding">The character encoding to use.</param>
     /// <param name="logger">The logger instance.</param>
-    public DocumentProcessor(Stream stream, Encoding encoding, ILogger<IStringProcessor>? logger) : base(stream, encoding)
+    public DocumentOldProcessor(Stream stream, Encoding encoding, ILogger<IStringProcessor>? logger) : base(stream, encoding)
     {
         Logger = logger;
         DocumentReader = new BinaryReader(DocumentStream, DocumentEncoding, true);
     }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="DocumentProcessor"/> class using a <see cref="BinaryReader"/> and a logger.
+    /// Initializes a new instance of the <see cref="DocumentOldProcessor"/> class using a <see cref="BinaryReader"/> and a logger.
     /// </summary>
     /// <param name="reader">The reader for the document.</param>
     /// <param name="encoding">The character encoding to use.</param>
     /// <param name="logger">The logger instance.</param>
-    public DocumentProcessor(BinaryReader reader, Encoding encoding, ILogger<IStringProcessor>? logger) : base(reader.BaseStream, encoding)
+    public DocumentOldProcessor(BinaryReader reader, Encoding encoding, ILogger<IStringProcessor>? logger) : base(reader.BaseStream, encoding)
     {
         Logger = logger;
         DocumentReader = reader;
@@ -57,9 +57,9 @@ public class DocumentProcessor : Document, IDocumentProcessor
     }
 
     /// <summary>
-    /// Finalizes an instance of the <see cref="DocumentProcessor"/> class.
+    /// Finalizes an instance of the <see cref="DocumentOldProcessor"/> class.
     /// </summary>
-    ~DocumentProcessor()
+    ~DocumentOldProcessor()
     {
         Dispose(true);
     }
