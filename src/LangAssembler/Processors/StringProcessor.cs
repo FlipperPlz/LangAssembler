@@ -106,6 +106,8 @@ public class StringProcessor : LaLoggable<IStringProcessor>, IStringProcessor
         return CurrentChar = Content.GetOrNull(position);
     }
 
+    public virtual int? PeekAt(long position) => Content.GetOrNull((int)position);
+
     /// <summary>
     /// Resets the contents of the stepper and resets the window.
     /// </summary>

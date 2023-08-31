@@ -3,21 +3,15 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-
-
-
-
-
         <Nullable>enable</Nullable>
-
-
-
-
-
-
     </PropertyGroup>
 
 
+    <ItemGroup>
+        <ProjectReference Include="..\LangAssembler.Lexer\LangAssembler.Lexer.csproj" />
+        <ProjectReference Include="..\LangAssembler.Parser\LangAssembler.Parser.csproj" />
+        <ProjectReference Include="..\LangAssembler.PreProcessor\LangAssembler.PreProcessor.csproj" />
+    </ItemGroup>
 
 
 </Project>

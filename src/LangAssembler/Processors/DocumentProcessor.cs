@@ -107,6 +107,15 @@ public class DocumentProcessor : Document, IDocumentProcessor
         ColumnNumber = 1;
     }
 
+    public int? PeekAt(long position)
+    {
+        var startPosition = DocumentPosition;
+        DocumentPosition = position - 1;
+        var result = DocumentReader.Read();
+        DocumentPosition = startPosition;
+        return result;
+    }
+
     /// <summary>
     /// Gets a string that represents a specified substring in this document.
     /// </summary>

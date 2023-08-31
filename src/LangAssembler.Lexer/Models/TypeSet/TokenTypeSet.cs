@@ -21,21 +21,34 @@ public abstract class TokenTypeSet : ITokenTypeSet
     /// <summary>
     /// Field to hold a collection of token types.
     /// </summary>
-    private IEnumerable<ITokenType>? _types;
+    private readonly List<ITokenType> _types = new List<ITokenType>();
+
+    private bool _initialized = false;
     
     
     /// <summary>
     /// Initializes the collection of token types. The method must be overridden in a derived class.
     /// </summary>
     /// <returns>A collection of token types.</returns>
-    protected abstract IEnumerable<ITokenType> InitializeTypes();
+    protected abstract void InitializeTypes();
+
+    protected void InitializeType(ITokenType tokenType)
+    {
+        _types.Add(tokenType);
+    }
 
     /// <summary>
     /// A private helper method to generate an enumerator for token types.
     /// </summary>
     /// <returns>Enumerator of token types.</returns>
-    private IEnumerator<ITokenType> TypeEnumerator() =>
-        _types is { } types ? types.GetEnumerator() : (_types = InitializeTypes()).GetEnumerator();
+    private IEnumerator<ITokenType> TypeEnumerator()
+    {
+        if (_initialized) return _types.GetEnumerator();
+        InitializeTypes();
+        _initialized = true;
+
+        return _types.GetEnumerator();
+    }
     
     /// <summary>
     /// Gets an enumerator for the token types.

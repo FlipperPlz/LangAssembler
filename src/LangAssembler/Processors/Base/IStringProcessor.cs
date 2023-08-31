@@ -45,6 +45,8 @@ public interface IStringProcessor : IDisposable, IFormattable, ILaLoggable<IStri
     /// <param name="content">The new content to write to buffer.</param>
     public void ResetStepper(string? content = null);
 
+    public int? PeekAt(long position);
+
     string this[Range range] { get; }
 }
 

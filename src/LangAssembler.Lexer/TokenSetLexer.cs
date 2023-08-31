@@ -15,7 +15,7 @@ namespace LangAssembler.Lexer;
 /// </summary>
 /// <typeparam name="TTokenSet">The type of the tokens that this Lexer can process.</typeparam>
 public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
-    where TTokenSet : class, ITokenTypeSet, new()
+    where TTokenSet : class, ITokenTypeSet
 {
     /// <summary>
     /// Gets the order of token inheritance.
@@ -43,7 +43,7 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// Looks for a valid token down the chain of inheritance.
     /// </remarks>
     /// <inheritdoc cref="Lexer.GetNextMatch"/>
-    protected sealed override ITokenType GetNextMatch(int tokenStart, int? currentChar)
+    protected sealed override ITokenType LocateNextMatch(int tokenStart, int? currentChar)
     {
         foreach (var set in TokenInheritanceOrder)
         {

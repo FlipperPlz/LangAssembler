@@ -9,5 +9,5 @@ public interface IALexConditionalElement : IALexElement
     
     ALexValueType IALexValue.ValueType => ALexValueType.Conditional;
 
-    string IALexValue.Value => $"{LeftElement.Value} | {RightElement.Value}";
+    string IALexValue.Value => $"{LeftElement} | {RightElement}";
 }

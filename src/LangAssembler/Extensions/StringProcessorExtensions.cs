@@ -40,14 +40,6 @@ public static class StringProcessorExtensions
     public static string GetRange(this IStringProcessor processor, Range range) => processor[range];
     
     /// <summary>
-    /// Looks at the character at a specified position without changing the string processor's position.
-    /// </summary>
-    /// <param name="processor">The processor instance to act upon.</param>
-    /// <param name="position">The position to peek at.</param>
-    /// <returns>The character at the peeked position.</returns>
-    public static char? PeekAt(this IStringProcessor processor, int position) => processor.ToString(null, null).GetOrNull(position);
-    
-    /// <summary>
     /// Calculate the new position for text replacement based on
     /// the given TextReplacementPositionOption value.
     /// </summary>
@@ -198,6 +190,10 @@ public static class StringProcessorExtensions
     public static int? ErasePrevious(this IEditableStringProcessor processor) => 
         EraseChar(processor, processor.Position - 1);
 
+
+    public static int? PeekForward(this IStringProcessor processor, int count = 1) =>
+        processor.PeekAt(processor.Position + count);
+    
     /// <summary>
     /// Erases a specific character from the string processor.
     /// </summary>

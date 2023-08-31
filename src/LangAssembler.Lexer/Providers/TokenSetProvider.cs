@@ -17,7 +17,7 @@ public static class TokenSetProvider
     /// </summary>
     /// <typeparam name="TTokenTypeSet">The type of the token type set.</typeparam>
     /// <returns>An instance of the specified token type set.</returns>
-    public static TTokenTypeSet LocateSet<TTokenTypeSet>() where TTokenTypeSet : ITokenTypeSet, new()
+    public static TTokenTypeSet LocateSet<TTokenTypeSet>() where TTokenTypeSet : ITokenTypeSet
     {
         var type = typeof(TTokenTypeSet);
         if (Instances.TryGetValue(type, out var instance))
@@ -25,9 +25,7 @@ public static class TokenSetProvider
             return (TTokenTypeSet)instance;
         }
 
-        var created = new TTokenTypeSet();
-        Instances.TryAdd(type, created);
-        return created;
+        throw new Exception("Could not locate token set.");
     }
 
     /// <summary>
