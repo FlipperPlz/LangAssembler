@@ -1,12 +1,18 @@
 ﻿using System.Text;
 
-namespace LangAssembler.SlidingWindow;
+namespace LangAssembler.Document.Models.Source;
 
 public interface IDocumentSource : IDisposable, IAsyncDisposable
 {
     public Stream DocumentStream { get; }
     public string DocumentName { get; }
     public bool IsVirtual { get; }
+    public long DocumentPosition
+    {
+        get => DocumentStream.Position;
+        set => DocumentStream.Seek(value, SeekOrigin.Begin);
+    }
+    public long DocumentLength => DocumentStream.Length;
 
     public sealed class FileSystem : IDocumentSource
     {

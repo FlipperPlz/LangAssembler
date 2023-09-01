@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Generator", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Generator.Lexer", "src\LangAssembler.Generator.Lexer\LangAssembler.Generator.Lexer.csproj", "{8AFD3F52-2C7E-4140-A9B2-682BA5C73844}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Document", "src\LangAssembler.Document\LangAssembler.Document.csproj", "{859391B8-F654-4B06-90D8-D2CB00372BD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,7 @@ Global
 		{561985D6-3120-44F2-A03D-D825312CB598} = {1F369EB0-48F8-40AB-9C69-646E04BEBC20}
 		{24AB24D0-EAD7-4E4D-9E44-B3D374CC62CF} = {561985D6-3120-44F2-A03D-D825312CB598}
 		{8AFD3F52-2C7E-4140-A9B2-682BA5C73844} = {561985D6-3120-44F2-A03D-D825312CB598}
+		{859391B8-F654-4B06-90D8-D2CB00372BD9} = {1F369EB0-48F8-40AB-9C69-646E04BEBC20}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{785A32C8-C525-4F3A-A1E5-3E5E03E5017C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,5 +66,9 @@ Global
 		{8AFD3F52-2C7E-4140-A9B2-682BA5C73844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AFD3F52-2C7E-4140-A9B2-682BA5C73844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFD3F52-2C7E-4140-A9B2-682BA5C73844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{859391B8-F654-4B06-90D8-D2CB00372BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{859391B8-F654-4B06-90D8-D2CB00372BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{859391B8-F654-4B06-90D8-D2CB00372BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{859391B8-F654-4B06-90D8-D2CB00372BD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
