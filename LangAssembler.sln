@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Generator", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Generator.Lexer", "src\LangAssembler.Generator.Lexer\LangAssembler.Generator.Lexer.csproj", "{8AFD3F52-2C7E-4140-A9B2-682BA5C73844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.Document", "src\LangAssembler.Document\LangAssembler.Document.csproj", "{859391B8-F654-4B06-90D8-D2CB00372BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangAssembler.DocumentBase", "src\LangAssembler.DocumentBase\LangAssembler.DocumentBase.csproj", "{859391B8-F654-4B06-90D8-D2CB00372BD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

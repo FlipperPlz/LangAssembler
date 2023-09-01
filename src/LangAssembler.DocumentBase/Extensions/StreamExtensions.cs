@@ -1,4 +1,4 @@
-﻿namespace LangAssembler.Document.Extensions;
+﻿namespace LangAssembler.DocumentBase.Extensions;
 
 public static class StreamExtensions
 {

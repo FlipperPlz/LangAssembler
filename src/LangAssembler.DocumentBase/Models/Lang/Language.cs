@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using LangAssembler.Document.Extensions;
-using LangAssembler.Document.Models.Source;
+using LangAssembler.DocumentBase.Extensions;
+using LangAssembler.DocumentBase.Models.Source;
 using Microsoft.Extensions.Logging;
 // ReSharper disable PublicConstructorInAbstractClass
 
-namespace LangAssembler.Document.Models.Lang;
+namespace LangAssembler.DocumentBase.Models.Lang;
 
 public abstract class Language 
 {
@@ -29,15 +29,15 @@ public abstract class Language
     #endregion
     public abstract string LanguageName { get; }
     public abstract string LanguageAbbreviation { get; }
-    public virtual Encoding LanguageEncoding => Encoding.UTF8;
-    public ILogger<Language>? LanguageLogger { get; }
+    public virtual Encoding Encoding => Encoding.UTF8;
+    public ILogger<Language>? Logger { get; }
 
     protected Language(ILogger<Language>? logger = default)
     {
-        LanguageLogger = logger;
+        Logger = logger;
     }
 
-    public static Document OpenDocument<T>(IDocumentSource source, Encoding? encoding = null) where T: Language, new() => 
+    public static Document OpenDocument<T>(DocumentSource source, Encoding? encoding = null) where T: Language, new() => 
         Document.Of<T>(source, encoding);
     
     public class PlainText : Language

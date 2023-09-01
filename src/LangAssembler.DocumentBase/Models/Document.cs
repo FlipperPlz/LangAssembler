@@ -1,38 +1,38 @@
 ﻿using System.Text;
-using LangAssembler.Document.Models.Lang;
-using LangAssembler.Document.Models.Source;
-using LangAssembler.SlidingWindow;
+using LangAssembler.DocumentBase.Models.Lang;
+using LangAssembler.DocumentBase.Models.Source;
 
-namespace LangAssembler.Document.Models;
+namespace LangAssembler.DocumentBase.Models;
 
 public class Document : IDisposable, IAsyncDisposable
 {
     #region static
-    private static readonly Dictionary<IDocumentSource, Document> Documents = new();
+    private static readonly Dictionary<DocumentSource, Document> Documents = new();
     
-    public static Document Of<TLanguage>(IDocumentSource source, Encoding? encoding = null) where TLanguage : Language, new() =>
+    public static Document Of<TLanguage>(DocumentSource source, Encoding? encoding = null) where TLanguage : Language, new() =>
         Documents.TryGetValue(source, out var document) ? document : CreateDocument<TLanguage>(source, encoding);
 
-    public static Document CreateDocument<TLanguage>(IDocumentSource source, Encoding? encoding = null)
+    public static Document CreateDocument<TLanguage>(DocumentSource source, Encoding? encoding = null)
         where TLanguage : Language, new()
     {
         var doc = new Document(source, Language.Of<TLanguage>(), encoding);
         Documents.Add(source, doc);
         return doc;
     }
-        
+    public static implicit operator Stream(Document d) => d.Source;
+    
     #endregion
-    public IDocumentSource DocumentSource { get; }
-    public Encoding DocumentEncoding { get; }
-    public Language DocumentLanguage { get; }
+    public DocumentSource Source { get; }
+    public Encoding Encoding { get; }
+    public Language Language { get; }
     
     private bool _disposed;
 
-    protected Document(IDocumentSource source, Language? language = null, Encoding? encoding = null)
+    protected Document(DocumentSource source, Language? language = null, Encoding? encoding = null)
     {
-        DocumentSource = source;
-        DocumentLanguage = language ?? Language.PlainTextLanguage; 
-        DocumentEncoding = encoding ?? DocumentLanguage.LanguageEncoding;
+        Source = source;
+        Language = language ?? Language.PlainTextLanguage; 
+        Encoding = encoding ?? Language.Encoding;
     }
 
 
@@ -63,8 +63,8 @@ public class Document : IDisposable, IAsyncDisposable
         // ReSharper disable once InvertIf
         if (disposing)
         {
-            Documents.Remove(DocumentSource);
-            DocumentSource.Dispose();
+            Documents.Remove(Source);
+            Source.Dispose();
             _disposed = true;
         }
     }
@@ -79,8 +79,8 @@ public class Document : IDisposable, IAsyncDisposable
         // ReSharper disable once InvertIf
         if (disposing)
         {
-            Documents.Remove(DocumentSource);
-            await DocumentSource.DisposeAsync();
+            Documents.Remove(Source);
+            await Source.DisposeAsync();
             _disposed = true;
         }
     }
