@@ -1,4 +1,4 @@
-﻿using LangAssembler.DocumentBase.Models.Lang;
+﻿using LangAssembler.Models.Lang;
 
 namespace LangAssembler.Generator.Lexer;
 

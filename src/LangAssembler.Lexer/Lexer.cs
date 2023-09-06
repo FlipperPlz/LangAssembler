@@ -1,6 +1,5 @@
-﻿using LangAssembler.DocumentBase.IO;
-using LangAssembler.DocumentBase.Models;
-using LangAssembler.Extensions;
+﻿using LangAssembler.Extensions;
+using LangAssembler.IO;
 using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Events.Arguments;
 using LangAssembler.Lexer.Events.Delegates;
@@ -8,7 +7,7 @@ using LangAssembler.Lexer.Extensions;
 using LangAssembler.Lexer.Models.Match;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
-using LangAssembler.Options;
+using LangAssembler.Models;
 
 namespace LangAssembler.Lexer;
 

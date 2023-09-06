@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using LangAssembler.DocumentBase.Models.Lang;
-using LangAssembler.DocumentBase.Models.Source;
+using LangAssembler.Models.Lang;
+using LangAssembler.Models.Source;
 
-namespace LangAssembler.DocumentBase.Models;
+namespace LangAssembler.Models;
 
 public class Document : IDisposable, IAsyncDisposable
 {
-    #region static
+    #region Static Factory Methods
     private static readonly Dictionary<DocumentSource, Document> Documents = new();
     
     public static Document Of<TLanguage>(DocumentSource source, Encoding? encoding = null) where TLanguage : Language, new() =>
@@ -22,26 +22,34 @@ public class Document : IDisposable, IAsyncDisposable
     public static implicit operator Stream(Document d) => d.Source;
     
     #endregion
+
+    #region Properties
     public DocumentSource Source { get; }
     public Encoding Encoding { get; }
     public Language Language { get; }
     public bool Writable => Source.CanWrite;
+    #endregion
     
-    private bool _disposed;
+    #region Constructor and Finalizer
 
-    protected Document(DocumentSource source, Language? language = null, Encoding? encoding = null)
+    public Document(DocumentSource source, Language? language = null, Encoding? encoding = null)
     {
         Source = source;
         Language = language ?? Language.PlainTextLanguage; 
         Encoding = encoding ?? Language.Encoding;
     }
-
-
+    
     ~Document()
     {
         Dispose(false);
     }
 
+    #endregion
+    
+    #region IDisposable Support 
+
+    private bool _disposed;
+    
     public void Dispose()
     {
         Dispose(true);
@@ -85,4 +93,5 @@ public class Document : IDisposable, IAsyncDisposable
             _disposed = true;
         }
     }
+    #endregion
 }

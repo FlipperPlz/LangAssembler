@@ -1,4 +1,4 @@
-﻿using LangAssembler.IO;
+﻿using LangAssembler.Models.Buffer.Encoded;
 
 namespace LangAssembler.Extensions;
 

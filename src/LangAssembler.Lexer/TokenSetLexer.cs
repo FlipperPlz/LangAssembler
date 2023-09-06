@@ -1,9 +1,9 @@
-﻿using LangAssembler.DocumentBase.Models;
-using LangAssembler.Lexer.Base;
+﻿using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
 using LangAssembler.Lexer.Providers;
+using LangAssembler.Models;
 
 namespace LangAssembler.Lexer;
 

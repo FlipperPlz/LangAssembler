@@ -1,13 +1,16 @@
 ﻿using System.Text;
-using LangAssembler.DocumentBase.Extensions;
-using LangAssembler.DocumentBase.Models;
+using LangAssembler.Extensions;
+using LangAssembler.Models;
+using LangAssembler.Models.Source;
 
-namespace LangAssembler.DocumentBase.IO;
+namespace LangAssembler.IO;
 
 public class DocumentReader : IDocumentReader
 {
     protected readonly BinaryReader Reader;
     protected readonly BinaryWriter? Writer;
+    public const int DocumentOperationBufferSize = 5120; 
+    public DocumentSource DocumentSource => Document.Source;
     public Document Document { get; }
     public Encoding Encoding => Document.Encoding;
     public bool Writable => Writer is not null;
@@ -86,17 +89,89 @@ public class DocumentReader : IDocumentReader
             JumpTo(position);
         }
     }
+    
+    private void ReadExactly(long start, Span<byte> buffer)
+    {
+        var left = buffer.Length;
+        Position = start;
+        while (left > 0)
+        {
+            var read = Reader.Read(buffer[^left..]);
+            if (read == 0) throw new EndOfStreamException("Document ended unexpectedly");
+            left -= read;
+        }
+    }
 
-    public void ReplaceRange(long start, long end, Span<byte> content)
+    public void ReplaceRange(long start, long end, ReadOnlySpan<byte> content)
     {
         if (Writer is null) throw new InvalidOperationException("The document is not writable.");
-        //TODO:
+
+        var oldPosition = Position;
+        var providedLength = end - start;
+        var contentLength = content.Length;
+        var stride = contentLength - providedLength;
+
+        try
+        {
+            Position = start;
+            Writer.Write(content); 
+            Position = start + contentLength;
+
+            if (stride != 0)
+            {
+                if(!DocumentSource.CanResize)
+                    throw new InvalidOperationException("The document is not resizable.");
+
+                var remaining = Length - end;
+                var buffer = remaining < DocumentOperationBufferSize 
+                    ? stackalloc byte[(int)remaining] 
+                    : new byte[remaining];  
+                Position = end;
+                ReadExactly(end, buffer);
+
+                if (stride < 0)
+                {
+                    DocumentSource.Stream.SetLength(Length - stride);
+                }
+
+                Position = start + contentLength;
+                Writer.Write(buffer);
+            }
+        }
+        finally
+        {
+            JumpTo(oldPosition);
+        }
     }
 
     public void RemoveRange(long start, long end)
     {
         if (Writer is null) throw new InvalidOperationException("The document is not writable.");
-        //TODO:
+        if (!DocumentSource.CanResize)
+            throw new InvalidOperationException("The document is not resizable.");
+
+        var rangeLength = end - start;
+        var oldPosition = Position;
+        var remaining = Length - end;
+        var buffer = 
+            remaining < DocumentOperationBufferSize 
+                ? stackalloc byte[(int)remaining] 
+                : new byte[remaining];
+
+        try
+        {
+            Position = end;
+            ReadExactly(end, buffer);
+
+            DocumentSource.Stream.SetLength(Length - rangeLength);
+
+            Position = start;
+            Writer.Write(buffer);
+        }
+        finally
+        {
+            JumpTo(oldPosition);
+        }
     }
 
     public byte? MoveBackward(int count = 1)

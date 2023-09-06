@@ -1,7 +1,8 @@
-﻿using LangAssembler.DocumentBase.Models;
-using LangAssembler.IO;
+﻿using LangAssembler.Models;
+using LangAssembler.Models.Buffer.Editable;
+using LangAssembler.Models.Buffer.Encoded;
 
-namespace LangAssembler.DocumentBase.IO;
+namespace LangAssembler.IO;
 
 public interface IDocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposable, IEditableSlidingBuffer
 {

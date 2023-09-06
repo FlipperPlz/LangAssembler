@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LangAssembler.IO;
+namespace LangAssembler.Models.Buffer;
 
 public interface ISlidingBuffer
 {
     public long Position { get; }
     public long Length { get; }
+    public virtual bool CanEdit => false;
     
     public byte? CurrentByte { get; }
     public byte? PreviousByte { get; }

@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using LangAssembler.DocumentBase.Extensions;
-using LangAssembler.DocumentBase.Models.Source;
+using LangAssembler.Models.Source;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable PublicConstructorInAbstractClass
 
-namespace LangAssembler.DocumentBase.Models.Lang;
+namespace LangAssembler.Models.Lang;
 
 public abstract class Language 
 {

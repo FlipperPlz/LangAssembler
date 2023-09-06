@@ -1,4 +1,4 @@
-﻿using LangAssembler.DocumentBase.IO;
+﻿using LangAssembler.IO;
 using LangAssembler.Lexer.Events.Delegates;
 using LangAssembler.Lexer.Models.Match;
 using TokenEditedHandler = System.EventHandler<LangAssembler.Lexer.Events.Arguments.TokenMatchEditedEventArgs>;

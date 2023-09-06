@@ -1,15 +1,7 @@
-﻿using System.Text;
+﻿namespace LangAssembler.Models.Buffer.Encoded;
 
-namespace LangAssembler.IO;
-
-public interface IEncodedSlidingBuffer : ISlidingBuffer
+public static class EncodedSlidingBufferExtensions
 {
-    public Encoding Encoding { get; }
-}
-
-public static class EncodedSlidingBuffer
-{
-    
     public static string PeekForward(this IEncodedSlidingBuffer buffer, int length)
     {
         var position = buffer.Position;
