@@ -9,7 +9,33 @@ public interface IEncodedSlidingBuffer : ISlidingBuffer
 
 public static class EncodedSlidingBuffer
 {
-
+    
+    public static string PeekForward(this IEncodedSlidingBuffer buffer, int length)
+    {
+        var position = buffer.Position;
+        try
+        {
+            return NextCharacters(buffer, length);
+        }
+        finally
+        {
+            buffer.JumpTo(position);
+        }
+    }
+    
+    public static string PeekBackward(this IEncodedSlidingBuffer buffer, int length)
+    {
+        var position = buffer.Position;
+        try
+        {
+            return PreviousCharacters(buffer, length);
+        }
+        finally
+        {
+            buffer.JumpTo(position);
+        }
+    }
+    
     public static string NextCharacters(this IEncodedSlidingBuffer buffer, int length)
     {
         if (length == 0)

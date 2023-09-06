@@ -1,16 +1,16 @@
 ﻿using System.Text;
 using LangAssembler.DocumentBase.Extensions;
 using LangAssembler.DocumentBase.Models;
-using LangAssembler.IO;
 
 namespace LangAssembler.DocumentBase.IO;
 
-public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposable
+public class DocumentReader : IDocumentReader
 {
-    public readonly Document Document;
-    
     protected readonly BinaryReader Reader;
+    protected readonly BinaryWriter? Writer;
+    public Document Document { get; }
     public Encoding Encoding => Document.Encoding;
+    public bool Writable => Writer is not null;
     public long Length => Document.Source.Length;
     public long Position { get => Document.Source.Position; protected set => Document.Source.Position = value; }
     
@@ -25,6 +25,7 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
         _shouldDisposeDocument = !leaveOpen;
         Document = document;
         Reader = new BinaryReader(document, Document.Encoding, leaveOpen);
+        Writer = Document.Writable ? new BinaryWriter(document, Document.Encoding, leaveOpen) : null;
     }
 
     ~DocumentReader() => Dispose(false);
@@ -42,12 +43,70 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
 
     public byte? MoveForward(int count = 1)
     {
-        throw new NotImplementedException();
+        if(Position + count >= Length) return null;
+        
+        while (--count > 0)
+        {
+            CurrentByte = Reader.ReadByte();
+        }
+        PreviousByte = CurrentByte;
+        CurrentByte = Reader.ReadByte();
+
+        return CurrentByte;
+    }
+
+    public void ReplaceCurrent(byte b)
+    {
+        if (Writer is null) throw new InvalidOperationException("The document is not writable.");
+        var position = Position;
+
+        try
+        {
+            Position -= 1;
+            Writer.Write(b);
+        }
+        finally
+        {
+            JumpTo(position);
+        }
+    }
+
+    public void ReplacePrevious(byte b)
+    {
+        if (Writer is null) throw new InvalidOperationException("The document is not writable.");
+        var position = Position;
+
+        try
+        {
+            Position -= 2;
+            Writer.Write(b);
+        }
+        finally
+        {
+            JumpTo(position);
+        }
+    }
+
+    public void ReplaceRange(long start, long end, Span<byte> content)
+    {
+        if (Writer is null) throw new InvalidOperationException("The document is not writable.");
+        //TODO:
+    }
+
+    public void RemoveRange(long start, long end)
+    {
+        if (Writer is null) throw new InvalidOperationException("The document is not writable.");
+        //TODO:
     }
 
     public byte? MoveBackward(int count = 1)
     {
-        throw new NotImplementedException();
+        if(Position + count >= Length) return null;
+        Position -= count - 2;
+        PreviousByte = Reader.ReadByte();
+        CurrentByte = Reader.ReadByte();
+
+        return CurrentByte;
     }
 
     public byte? PeekNext()
@@ -63,25 +122,25 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
         }
     }
 
-    public ReadOnlyMemory<byte> PeekAt(long location, int length)
+    public Span<byte> PeekAt(long location, long length)
     {
         if(location < 0 || location + length > Length) 
-            return ReadOnlyMemory<byte>.Empty;
+            return Span<byte>.Empty;
 
         var stream = AsStream();
         if (stream is MemoryStream memory)
         {
-            return !memory.TryGetBuffer(out var segment) ? ReadOnlyMemory<byte>.Empty : segment.AsMemory().Slice((int)location, length);
+            return !memory.TryGetBuffer(out var segment) ? Span<byte>.Empty : segment.AsSpan().Slice((int)location, (int)length);
         }
         var originalPos = Position;
 
         try
         {
-            var result = new Memory<byte>(new byte[length]);
-
+            var buffer = length < 1024 ? new Memory<byte>(stackalloc byte[(int)length].ToArray()) : new byte[length];
+            
             Position = location;
-            _ = Reader.Read(result.Span);
-            return result;
+            _ = Reader.Read(buffer.Span);
+            return buffer.Span;
         }
         finally
         {
@@ -89,11 +148,15 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
         }
     }
 
+    public void ResetBuffer()
+    {
+        JumpTo(0);
+    }
+
     public Stream AsStream() => Document.Source.Stream;
 
-    public Span<byte> AsSpan() => AsStream().ToSpan();
-
-
+    public Span<byte> AsSpan() => AsStream().AsSpan();
+    
     public void Dispose()
     {
         Dispose(true);
@@ -115,6 +178,7 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
 
         if (disposing)
         {
+            Writer?.Dispose();
             Reader.Dispose();
             if (_shouldDisposeDocument) Document.Dispose();
             _disposed = true;
@@ -130,9 +194,15 @@ public class DocumentReader : IEncodedSlidingBuffer, IDisposable, IAsyncDisposab
 
         if (disposing)
         {
+            if (Writer is not null)
+            {
+                await Writer.DisposeAsync();
+            }
+            
             Reader.Dispose();
             if (_shouldDisposeDocument) await Document.DisposeAsync();
             _disposed = true;
         }
     }
+
 }

@@ -3,7 +3,7 @@
 public static class StreamExtensions
 {
 
-    public static Span<byte> ToSpan(this Stream stream, int bufferSize = 1024)
+    public static Span<byte> AsSpan(this Stream stream, int bufferSize = 1024)
     {
         if (stream is MemoryStream memoryStream)
         {

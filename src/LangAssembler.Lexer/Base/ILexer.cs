@@ -1,6 +1,6 @@
-﻿using LangAssembler.Lexer.Events.Delegates;
+﻿using LangAssembler.DocumentBase.IO;
+using LangAssembler.Lexer.Events.Delegates;
 using LangAssembler.Lexer.Models.Match;
-using LangAssembler.Processors.Tracked;
 using TokenEditedHandler = System.EventHandler<LangAssembler.Lexer.Events.Arguments.TokenMatchEditedEventArgs>;
 using TokenRemovedHandler = System.EventHandler<LangAssembler.Lexer.Models.Match.ITokenMatch>;
 
@@ -9,7 +9,7 @@ namespace LangAssembler.Lexer.Base;
 /// <summary>
 /// Defines the properties, methods and events of a LangAssembler Lexer.
 /// </summary>
-public interface ILexer : ITrackedStringProcessorBase
+public interface ILexer : IDocumentReader
 {
     /// <summary>
     /// A flag indicating if event handling has been muted or not.
@@ -63,5 +63,5 @@ public interface ILexer : ITrackedStringProcessorBase
     /// </remarks>
     /// <param name="tokenMatch">The token match instance which text should be replaced.</param>
     /// <param name="text">The new text to replace the current token text.</param>
-    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text);
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> text);
 }

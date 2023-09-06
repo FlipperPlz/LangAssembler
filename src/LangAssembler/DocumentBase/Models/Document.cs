@@ -25,6 +25,7 @@ public class Document : IDisposable, IAsyncDisposable
     public DocumentSource Source { get; }
     public Encoding Encoding { get; }
     public Language Language { get; }
+    public bool Writable => Source.CanWrite;
     
     private bool _disposed;
 

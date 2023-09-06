@@ -1,12 +1,9 @@
-﻿using System.Text;
+﻿using LangAssembler.DocumentBase.Models;
 using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
 using LangAssembler.Lexer.Providers;
-using LangAssembler.Options;
-using LangAssembler.Processors.Base;
-using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Lexer;
 
@@ -28,14 +25,6 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// </summary>
     public static TTokenSet DefaultTokenTypeSet => TokenSetProvider.LocateSet<TTokenSet>();
 
-    protected TokenSetLexer(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
-    {
-    }
-
-    protected TokenSetLexer(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
-    {
-    }
-
     /// <summary>
     /// This method is designed to identify the next token type within the specified input buffer
     /// </summary>
@@ -43,7 +32,7 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// Looks for a valid token down the chain of inheritance.
     /// </remarks>
     /// <inheritdoc cref="Lexer.GetNextMatch"/>
-    protected sealed override ITokenType LocateNextMatch(int tokenStart, int? currentChar)
+    protected sealed override ITokenType LocateNextMatch(long tokenStart, int? currentChar)
     {
         foreach (var set in TokenInheritanceOrder)
         {
@@ -64,5 +53,9 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// <param name="tokenStart">The start position of the token.</param>
     /// <param name="currentChar">The current character being processed.</param>
     /// <returns>Returns the matched token type.</returns>
-    protected abstract ITokenType GetNextMatch(ITokenTypeSet set, int tokenStart, int? currentChar);
+    protected abstract ITokenType GetNextMatch(ITokenTypeSet set, long tokenStart, int? currentChar);
+
+    protected TokenSetLexer(Document document, bool leaveOpen = false) : base(document, leaveOpen)
+    {
+    }
 }

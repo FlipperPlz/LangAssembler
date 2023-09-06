@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using LangAssembler.DocumentBase.IO;
+using LangAssembler.DocumentBase.Models;
 using LangAssembler.Extensions;
 using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Events.Arguments;
@@ -8,16 +9,13 @@ using LangAssembler.Lexer.Models.Match;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Options;
-using LangAssembler.Processors.Base;
-using LangAssembler.Processors.Tracked;
-using Microsoft.Extensions.Logging;
 
 namespace LangAssembler.Lexer;
 
 /// <summary>
 /// Provides a base implementation for a lexer. 
 /// </summary>
-public abstract class Lexer : TrackedEditableStringProcessor, ILexer
+public abstract class Lexer : DocumentReader, ILexer
 {
     protected static readonly ITokenType InvalidToken = InvalidTokenType.Instance;
 
@@ -53,17 +51,12 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// Gets the last matched token.
     /// </summary>
     public ITokenMatch? LastMatch { get; protected set; }
-
-    /// <inheritdoc />
-    protected Lexer(string content, ILogger<IStringProcessor>? logger) : base(content, logger)
-    {
-    }
-
-    /// <inheritdoc />
-    protected Lexer(BinaryReader reader, Encoding encoding, StringProcessorDisposalOption option, ILogger<IStringProcessor>? logger = default, int? length = null, long? stringStart = null) : base(reader, encoding, option, logger, length, stringStart)
-    {
-    }
     
+    
+    protected Lexer(Document document, bool leaveOpen = false) : base(document, leaveOpen)
+    {
+    }
+
     /// <summary>
     /// This method is designed to identify the next token type within the specified input buffer
     /// </summary>
@@ -80,7 +73,7 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <returns>
     /// An instance of the <see cref="ITokenType"/> interface, representing the type of the next matched token.
     /// </returns>
-    protected virtual ITokenType GetNextMatch(int tokenStart, int? currentChar) => 
+    protected virtual ITokenType GetNextMatch(long tokenStart, int? currentChar) => 
         LocateNextMatch(tokenStart, currentChar);
 
     
@@ -91,7 +84,7 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <param name="tokenStart">The starting position to begin search.</param>
     /// <param name="currentChar">The current character under analysis.</param>
     /// <returns>The type of the next token that was matched.</returns>
-    protected abstract ITokenType LocateNextMatch(int tokenStart, int? currentChar);
+    protected abstract ITokenType LocateNextMatch(long tokenStart, int? currentChar);
     
     /// <summary>
     /// Handles the TokenMatched event. 
@@ -153,7 +146,7 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// </summary>
     /// <param name="tokenStart">Start index of the token in the lexer buffer.</param>
     /// <returns>A token match of type "invalid".</returns>
-    protected ITokenMatch CreateInvalidMatch(int tokenStart) =>
+    protected ITokenMatch CreateInvalidMatch(long tokenStart) =>
         CreateTokenMatch(InvalidToken, tokenStart);
     
     /// <summary>
@@ -165,8 +158,8 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <param name="type">The type of the token.</param>
     /// <param name="tokenStart">The start index of the token in the lexer buffer.</param>
     /// <returns>A new <see cref="TokenMatch"/> instance.</returns>
-    protected ITokenMatch CreateTokenMatch(ITokenType type, int tokenStart) =>
-        new TokenMatch(this.GetRange(tokenStart..Position), tokenStart, this, type);
+    protected ITokenMatch CreateTokenMatch(ITokenType type, long tokenStart) =>
+        new TokenMatch(this.GetRange(tokenStart, Position), tokenStart, Position, this, type);
     
     /// <summary>
     /// Removes a specific token match from the sequence of prior matches, and triggers the TokenRemoved event.
@@ -180,7 +173,12 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
         }
 
         EditablePreviousMatches.Remove(tokenMatch);
-        this.RemoveRange(tokenMatch.CurrentIndex(), out _, StringProcessorPositionalReplacementOption.KeepRemaining);
+        RemoveRange(tokenMatch.TokenStart, tokenMatch.TokenEnd);
+    }
+
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -189,14 +187,15 @@ public abstract class Lexer : TrackedEditableStringProcessor, ILexer
     /// <inheritdoc cref="ILexer.ReplaceTokenMatchText"/>
     /// <param name="tokenMatch">The token match to have its text replaced.</param>
     /// <param name="text">The new text to replace the current token text.</param>
-    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text)
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> replacement)
     {
         var oldContents = tokenMatch.ToSubstring();
-        tokenMatch.TokenText = text;
-        ReplaceRange(tokenMatch.CurrentIndex(), text, out _, StringProcessorPositionalReplacementOption.KeepRemaining);
+        //tokenMatch.TokenText = text;
+        ReplaceRange(tokenMatch.TokenStart, tokenMatch.TokenEnd, replacement);
         if (!EventsMuted)
         {
             TokenEdited?.Invoke(this, new TokenMatchEditedEventArgs(tokenMatch, oldContents));
         }
     }
+
 }

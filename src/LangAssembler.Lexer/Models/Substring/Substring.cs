@@ -15,17 +15,21 @@ public struct Substring : ISubstring
     /// Gets the index at which the matched token starts in the text being tokenized.
     /// </summary>
     /// <value>A reference to the token start index.</value>
-    public int TokenStart { get; set; }
-    
+    public long TokenStart { get; set; }
+
+    public long TokenEnd { get; set; }
+
     /// <summary>
     /// Initializes a new instance of the Substring struct.
     /// </summary>
     /// <param name="tokenText">The text of the token.</param>
     /// <param name="tokenStart">The start index of the token.</param>
-    public Substring(string tokenText, int tokenStart)
+    /// <param name="tokenEnd">The end index of the token.</param>
+    public Substring(string tokenText, long tokenStart, long tokenEnd)
     {
         TokenText = tokenText;
         TokenStart = tokenStart;
+        TokenEnd = tokenEnd;
     }
 
 }

@@ -15,5 +15,7 @@ public interface ISubstring
     /// Gets the index at which the matched token starts in the text being tokenized.
     /// </summary>
     /// <value>A reference to the token start index.</value>
-    public int TokenStart { get; set; }
+    public long TokenStart { get; set; }
+    
+    public long TokenEnd { get; set; }
 }

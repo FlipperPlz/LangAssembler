@@ -22,7 +22,7 @@ public static class ParserExtensions
     (
         this IParser<TAstRoot, TLexer> parser,
         TLexer lexer,
-        TProcessor processor,
+        TProcessor? processor = default,
         ILogger? logger = default
     )
         where TAstRoot : class, new()
@@ -30,7 +30,7 @@ public static class ParserExtensions
         where TProcessor : IPreProcessor<TLexer>
     {
         processor?.ProcessLexer(lexer, logger);
-        lexer.ResetStepper();
+        lexer.ResetBuffer();
         parser.Parse(lexer, logger);
     }
     
@@ -63,7 +63,7 @@ public static class ParserExtensions
     {
         var processor = new TProcessor();
         processor.ProcessLexer(lexer, logger);
-        lexer.ResetStepper();
+        lexer.ResetBuffer();
         parser.Parse(lexer, logger);
         return processor;
     }

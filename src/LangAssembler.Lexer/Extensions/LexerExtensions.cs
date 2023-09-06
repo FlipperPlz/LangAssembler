@@ -10,7 +10,7 @@ public static class LexerExtensions
     /// </summary>
     /// <param name="lexer">The instance of ILexer to retrieve the farthest index from.</param>
     /// <returns>Returns the farthest index a previous match reached, or the current lexer position.</returns>
-    public static int GetFarthestIndexed(this ILexer lexer) => 
+    public static long GetFarthestIndexed(this ILexer lexer) => 
         lexer.PreviousMatches.LastOrDefault() is {} last 
             ? last.TokenStart + last.TokenLength() 
             : lexer.Position;

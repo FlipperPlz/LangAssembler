@@ -15,7 +15,9 @@ public interface ISlidingBuffer
     public byte? MoveBackward([Range(0, int.MaxValue)] int count = 1);
     public byte? PeekNext();
 
-    public ReadOnlyMemory<byte> PeekAt(long location, [Range(0, int.MaxValue)] int length);
+    public Span<byte> PeekAt(long location, [Range(0, int.MaxValue)] long length);
+
+    public void ResetBuffer();
 
     public Stream AsStream();
     public Span<byte> AsSpan();

@@ -7,6 +7,7 @@ public abstract class DocumentSource : IDisposable, IAsyncDisposable
     public abstract Stream Stream { get; }
     public abstract string Name { get; }
     public abstract bool IsVirtual { get; }
+    public bool CanWrite => Stream.CanWrite;
     public long Position { get => Stream.Position; set => Stream.Seek(value, SeekOrigin.Begin); }
     public long Length => Stream.Length;
     private bool _disposed;
@@ -57,7 +58,7 @@ public abstract class DocumentSource : IDisposable, IAsyncDisposable
         public string DocumentPath => File.FullName;
         public override string Name => File.Name;
         public override bool IsVirtual => false;
-        
+
         public FileSystem(FileInfo info, FileMode mode, FileAccess access)
         {
             File = info;

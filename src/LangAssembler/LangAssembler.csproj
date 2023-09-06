@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="DocumentBase\" />
         <Folder Include="Language\" />
-        <Folder Include="SlidingWindow\" />
     </ItemGroup>
 
 
