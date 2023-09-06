@@ -1,8 +1,8 @@
 ﻿using System.Text;
+using LangAssembler.Models.Doc.Source;
 using LangAssembler.Models.Lang;
-using LangAssembler.Models.Source;
 
-namespace LangAssembler.Models;
+namespace LangAssembler.Models.Doc;
 
 public class Document : IDisposable, IAsyncDisposable
 {

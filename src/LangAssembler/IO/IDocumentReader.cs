@@ -1,6 +1,6 @@
-﻿using LangAssembler.Models;
-using LangAssembler.Models.Buffer.Editable;
+﻿using LangAssembler.Models.Buffer.Editable;
 using LangAssembler.Models.Buffer.Encoded;
+using LangAssembler.Models.Doc;
 
 namespace LangAssembler.IO;
 

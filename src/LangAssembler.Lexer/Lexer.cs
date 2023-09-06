@@ -8,6 +8,7 @@ using LangAssembler.Lexer.Models.Match;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Models;
+using LangAssembler.Models.Doc;
 
 namespace LangAssembler.Lexer;
 

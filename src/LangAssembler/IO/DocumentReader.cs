@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using LangAssembler.Extensions;
-using LangAssembler.Models;
-using LangAssembler.Models.Source;
+using LangAssembler.Models.Doc;
+using LangAssembler.Models.Doc.Source;
 
 namespace LangAssembler.IO;
 

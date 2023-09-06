@@ -1,5 +1,6 @@
 ﻿using System.Text;
-using LangAssembler.Models.Source;
+using LangAssembler.Models.Doc;
+using LangAssembler.Models.Doc.Source;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable PublicConstructorInAbstractClass

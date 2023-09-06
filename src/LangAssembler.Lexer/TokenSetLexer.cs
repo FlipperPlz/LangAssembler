@@ -4,6 +4,7 @@ using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
 using LangAssembler.Lexer.Providers;
 using LangAssembler.Models;
+using LangAssembler.Models.Doc;
 
 namespace LangAssembler.Lexer;
 

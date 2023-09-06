@@ -1,4 +1,9 @@
-﻿namespace LangAssembler.Extensions;
+﻿using System.Text;
+using LangAssembler.Models.Doc;
+using LangAssembler.Models.Doc.Source;
+using LangAssembler.Models.Lang;
+
+namespace LangAssembler.Extensions;
 
 public static class StringExtensions
 {
@@ -20,4 +25,12 @@ public static class StringExtensions
 
         return null;
     }
+
+
+    public static DocumentSource.Virtual ToDocumentSource(this string content, Encoding encoding,
+        string documentName = "untitled_document.txt") =>
+        new DocumentSource.Virtual(documentName, content, encoding);
+
+    public static Document ToDocument<TLanguage>(this string content, Encoding encoding, string documentName = "untitled_document.txt") 
+        where TLanguage : Language, new() => Document.Of<TLanguage>(ToDocumentSource(content, encoding, documentName), encoding);
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace LangAssembler.Models.Source;
+namespace LangAssembler.Models.Doc.Source;
 
 public abstract class DocumentSource : IDisposable, IAsyncDisposable
 {
