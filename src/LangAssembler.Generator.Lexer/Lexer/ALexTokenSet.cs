@@ -1,6 +1,8 @@
 ﻿using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.TypeSet;
+using LangAssembler.Models.Buffer;
+using LangAssembler.Models.Buffer.Encoded;
 
 namespace LangAssembler.Generator.Lexer.Lexer;
 
@@ -44,7 +46,7 @@ public sealed class ALexTokenSet : TokenTypeSet
     public static readonly ITokenType ExternalModifierToken = 
         new TokenType("modifier.external", MatchExternalModifier);
     public static readonly ITokenType StringToken = 
-        new TokenType("string", MatchStringModifier);
+        new TokenType("string", MatchStringLiteral);
     public static readonly ITokenType HexToken = 
         new TokenType("hex", MatchHexLiteral);
     
@@ -68,83 +70,41 @@ public sealed class ALexTokenSet : TokenTypeSet
         InitializeType(StringToken);
         InitializeType(HexToken);
     }
+
+    private static bool MatchMeta(ILexer lexer, long tokenStart, int? currentChar, bool isLeft = false) =>
+        MatchWord(lexer, tokenStart, currentChar, isLeft ? "[|" : "|]");
+    private static bool MatchLeftMeta(ILexer lexer, long tokenStart, int? currentChar) =>
+        MatchMeta(lexer, tokenStart, currentChar, true);
+    private static bool MatchRightMeta(ILexer lexer, long tokenStart, int? currentChar) => 
+        MatchMeta(lexer, tokenStart, currentChar);
+    private static bool MatchRightParenthesis(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == ')';
+    private static bool MatchLeftParenthesis(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '(';
+    private static bool MatchRightCurly(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '}';
+    private static bool MatchLeftCurly(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '{';
+    private static bool MatchRightSquare(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == ']';
+    private static bool MatchLeftSquare(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '[';
+    private static bool MatchAsterisk(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '*';
+    private static bool MatchPlus(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '+';
+    private static bool MatchBar(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == '|';
+    private static bool MatchSemicolon(ILexer lexer, long tokenStart, int? currentChar) => 
+        currentChar == ';';
+    private static bool MatchAssignOperator(ILexer lexer, long tokenStart, int? currentChar) =>
+        MatchWord(lexer, tokenStart, currentChar, "::=");
+    private static bool MatchExternalModifier(ILexer lexer, long tokenStart, int? currentChar) =>
+        MatchWord(lexer, tokenStart, currentChar, "external");
+    private static bool MatchPrivateModifier(ILexer lexer, long tokenStart, int? currentChar) =>
+        MatchWord(lexer, tokenStart, currentChar, "private");
     
-    private static bool MatchLeftMeta(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchRightMeta(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchRightParenthesis(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchLeftParenthesis(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchRightCurly(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchLeftCurly(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchRightSquare(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchLeftSquare(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchAsterisk(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchPlus(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchBar(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchSemicolon(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchAssignOperator(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchExternalModifier(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchPrivateModifier(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchStringModifier(ILexer lexer, long tokenStart, int? currentChar)
+    private static bool MatchStringLiteral(ILexer lexer, long tokenStart, int? currentChar)
     {
         throw new NotImplementedException();
     }

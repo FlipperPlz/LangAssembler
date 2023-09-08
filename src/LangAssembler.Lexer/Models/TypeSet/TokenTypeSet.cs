@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Providers;
+using LangAssembler.Models.Buffer.Encoded;
 
 namespace LangAssembler.Lexer.Models.TypeSet;
 
@@ -61,4 +63,19 @@ public abstract class TokenTypeSet : ITokenTypeSet
     /// </summary>
     /// <returns>Enumerator of token types.</returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
+    protected static bool MatchWord(ILexer lexer, long tokenStart, int? currentChar, string modifier)
+    {
+        if (currentChar != modifier[0])
+            return false;
+        
+        string lexerPeek = lexer.PeekForward(modifier.Length - 1);
+    
+        if (lexerPeek != modifier[1..]) 
+            return false;
+
+        lexer.MoveForward(modifier.Length - 1);
+        return true;
+    }
+    
 }
