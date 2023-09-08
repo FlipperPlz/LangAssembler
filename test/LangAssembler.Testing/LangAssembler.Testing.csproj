@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\LangAssembler\LangAssembler.csproj" />
+      <ProjectReference Include="..\..\src\LangAssembler\LangAssembler.csproj" />
     </ItemGroup>
 
 </Project>
