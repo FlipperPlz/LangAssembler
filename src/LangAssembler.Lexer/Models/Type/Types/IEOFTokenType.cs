@@ -1,5 +1,6 @@
 ﻿using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Extensions;
+using LangAssembler.Lexer.Models.Match;
 
 namespace LangAssembler.Lexer.Models.Type.Types;
 
@@ -8,6 +9,8 @@ namespace LangAssembler.Lexer.Models.Type.Types;
 /// </summary>
 public interface IEOFTokenType : ITokenType
 {
-    bool ITokenType.Matches(ILexer lexer, long tokenStart, int? currentChar) => 
+    TokenMatcher ITokenType.Matches => MatchEOF;
+
+    public virtual bool MatchEOF(ILexer lexer, long tokenStart, int? currentChar) => 
         tokenStart > lexer.Length || currentChar == null || !lexer.HasNext();
 }

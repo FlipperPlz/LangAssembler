@@ -1,4 +1,4 @@
-﻿using LangAssembler.Lexer.Base;
+﻿using LangAssembler.Lexer.Models.Match;
 
 namespace LangAssembler.Lexer.Models.Type;
 
@@ -12,5 +12,5 @@ public interface ITokenType
     /// </summary>
     public string DebugName { get; }
 
-    bool Matches(ILexer tokenSetLexer, long tokenStart, int? currentChar);
+    public TokenMatcher Matches { get; }
 }

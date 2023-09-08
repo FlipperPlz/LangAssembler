@@ -42,7 +42,7 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     }
 
     protected bool TryMatchType(long tokenStart, int? currentChar, ITokenType type) =>
-        type.Matches(this, tokenStart, currentChar);
+        type.Matches.Invoke(this, tokenStart, currentChar);
 
     protected virtual bool ShouldMatchType(ITokenType tokenType) => true;
 

@@ -1,4 +1,5 @@
 ﻿using LangAssembler.Lexer.Base;
+using LangAssembler.Lexer.Models.Match;
 
 namespace LangAssembler.Lexer.Models.Type;
 
@@ -12,18 +13,17 @@ public readonly struct TokenType : ITokenType
     /// </summary>
     public string DebugName { get; }
 
-    public bool Matches(ILexer tokenSetLexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
+    public TokenMatcher Matches { get; }
+
 
     /// <summary>
     /// Initializes a new instance of the TokenType with a given debug name.
     /// </summary>
     /// <param name="debugName">The debug name for this token type.</param>
-    public TokenType(string debugName)
+    public TokenType(string debugName, TokenMatcher tokenMatcher)
     {
         DebugName = debugName;
+        Matches = tokenMatcher;
     }
 
 }

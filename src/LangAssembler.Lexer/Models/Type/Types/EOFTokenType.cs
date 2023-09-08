@@ -25,11 +25,7 @@ public class EOFTokenType : IEOFTokenType
     /// This property is mainly used for debugging and error reporting.
     /// </summary>
     public string DebugName => EOFTokenName;
-
-    public bool Matches(ILexer tokenSetLexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     /// <summary>
     /// Private constructor to enforce the singleton pattern.

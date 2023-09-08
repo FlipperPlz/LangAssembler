@@ -1,4 +1,5 @@
 ﻿using LangAssembler.Lexer.Base;
+using LangAssembler.Lexer.Models.Match;
 
 namespace LangAssembler.Lexer.Models.Type.Types;
 
@@ -8,5 +9,6 @@ namespace LangAssembler.Lexer.Models.Type.Types;
 /// </summary>
 public interface IInvalidTokenType : ITokenType
 {
-    bool ITokenType.Matches(ILexer tokenSetLexer, long tokenStart, int? currentChar) => true;
+    TokenMatcher ITokenType.Matches => MatchInvalidToken;
+    public virtual bool MatchInvalidToken(ILexer lexer, long tokenStart, int? currentChar) => true;
 }
