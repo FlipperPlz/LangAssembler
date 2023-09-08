@@ -14,5 +14,7 @@ public static class LexerExtensions
         lexer.PreviousMatches.LastOrDefault() is {} last 
             ? last.TokenStart + last.TokenLength() 
             : lexer.Position;
+    
+    public static bool HasNext(this ILexer lexer) => lexer.Position + 1 < lexer.Length;
 
 }

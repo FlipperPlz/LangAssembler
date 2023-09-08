@@ -30,10 +30,12 @@ public interface ILexer : IDocumentReader
     /// Event that is triggered when a token is matched and events arent muted.
     /// </summary>
     public event TokenMatchHandler? TokenMatched;
+    
     /// <summary>
     /// Event that is triggered when a token is edited and events arent muted.
     /// </summary>
     public event TokenEditedHandler? TokenEdited;
+    
     /// <summary>
     /// Event that is triggered when a token is removed and events arent muted.
     /// </summary>
@@ -54,7 +56,6 @@ public interface ILexer : IDocumentReader
     /// <param name="tokenMatch">The token match instance to be removed.</param>
     public void RemoveTokenMatch(ITokenMatch tokenMatch);
     
-    
     /// <summary>
     /// Replaces the text of a specific matched token.
     /// </summary>
@@ -63,5 +64,9 @@ public interface ILexer : IDocumentReader
     /// </remarks>
     /// <param name="tokenMatch">The token match instance which text should be replaced.</param>
     /// <param name="text">The new text to replace the current token text.</param>
-    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> text);
+    /// <param name="stringVersion">A quick way to pass the TokenText down. Do not lie :{</param>
+
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> text, string? stringVersion = null);
+    
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text);
 }

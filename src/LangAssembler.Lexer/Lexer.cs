@@ -7,7 +7,6 @@ using LangAssembler.Lexer.Extensions;
 using LangAssembler.Lexer.Models.Match;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.Type.Types;
-using LangAssembler.Models;
 using LangAssembler.Models.Doc;
 
 namespace LangAssembler.Lexer;
@@ -39,13 +38,13 @@ public abstract class Lexer : DocumentReader, ILexer
     /// </summary>
     public event EventHandler<ITokenMatch>? TokenRemoved;
     
-    protected readonly List<ITokenMatch> EditablePreviousMatches = new();
+    protected readonly SortedList<long, ITokenMatch> EditablePreviousMatches = new();
     
     /// <summary>
     /// Provides enumerable access to <see cref="EditablePreviousMatches"/>.
     /// </summary>
     /// <inheritdoc cref="ILexer.PreviousMatches"/>
-    public IEnumerable<ITokenMatch> PreviousMatches => EditablePreviousMatches;
+    public IEnumerable<ITokenMatch> PreviousMatches => EditablePreviousMatches.Values;
 
     /// <summary>
     /// Gets the last matched token.
@@ -113,23 +112,23 @@ public abstract class Lexer : DocumentReader, ILexer
     /// <param name="match">The token match to add.</param>
     protected void AddPreviousMatch(ITokenMatch match)
     {
-        if(EditablePreviousMatches.Count == 0 || match.TokenStart >= EditablePreviousMatches[^1].TokenStart)
+        if (!EditablePreviousMatches.ContainsKey(match.TokenStart))
         {
-            EditablePreviousMatches.Add(match);
+            EditablePreviousMatches.Add(match.TokenStart, match);
+            return;
         }
-
-        var index = EditablePreviousMatches.BinarySearch(match, Comparer<ITokenMatch>.Create((x, y) => x.TokenStart.CompareTo(y.TokenStart)));
-        EditablePreviousMatches.Insert(index < 0 ? ~index : index, match);
+        //TODO handle overlapping keys
+        throw new NotImplementedException();
     }
 
     /// <summary>
     /// Locates the next match and registers it into the system.
     /// </summary>
     /// <returns>The match found.</returns>
-    public virtual ITokenMatch LexToken()
+    public ITokenMatch LexToken()
     {
         var tokenStart = Position;
-        var type = GetNextMatch(tokenStart, this.MoveForward());
+        var type = GetNextMatch(tokenStart, MoveForward());
         var match = type is IInvalidTokenType or null
             ? CreateInvalidMatch(tokenStart)
             : CreateTokenMatch(type, tokenStart);
@@ -172,25 +171,35 @@ public abstract class Lexer : DocumentReader, ILexer
             TokenRemoved?.Invoke(this, tokenMatch);
         }
 
-        EditablePreviousMatches.Remove(tokenMatch);
-        RemoveRange(tokenMatch.TokenStart, tokenMatch.TokenEnd);
-    }
-
-    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text)
-    {
+        if (EditablePreviousMatches.ContainsKey(tokenMatch.TokenStart))
+        {
+            EditablePreviousMatches.Remove(tokenMatch.TokenStart);
+            return;
+        }
+        
+        //TODO handle overlapping keys
         throw new NotImplementedException();
     }
+
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, string text) =>
+        ReplaceTokenMatchText(tokenMatch, Encoding.GetBytes(text));
 
     /// <summary>
     /// Replaces the text of a matched token, and triggers the TokenEdited event.
     /// </summary>
     /// <inheritdoc cref="ILexer.ReplaceTokenMatchText"/>
     /// <param name="tokenMatch">The token match to have its text replaced.</param>
-    /// <param name="text">The new text to replace the current token text.</param>
-    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> replacement)
+    /// <param name="replacement">The new data to replace the current token text.</param>
+    /// <param name="stringVersion">A quick way to pass the TokenText down. Do not lie :{</param>
+    public void ReplaceTokenMatchText(ITokenMatch tokenMatch, Span<byte> replacement, string? stringVersion = null)
     {
+        if (!Writable)
+        {
+            throw new InvalidOperationException($"This operation can't be performed. The document \"{Document.Source.Name}\" is not writable.");
+        }
+        
         var oldContents = tokenMatch.ToSubstring();
-        //tokenMatch.TokenText = text;
+        tokenMatch.TokenText = stringVersion ?? Encoding.GetString(replacement);
         ReplaceRange(tokenMatch.TokenStart, tokenMatch.TokenEnd, replacement);
         if (!EventsMuted)
         {

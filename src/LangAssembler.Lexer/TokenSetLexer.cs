@@ -1,9 +1,7 @@
 ﻿using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
-using LangAssembler.Lexer.Models.Type.Types;
 using LangAssembler.Lexer.Models.TypeSet;
 using LangAssembler.Lexer.Providers;
-using LangAssembler.Models;
 using LangAssembler.Models.Doc;
 
 namespace LangAssembler.Lexer;
@@ -35,26 +33,18 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// <inheritdoc cref="Lexer.GetNextMatch"/>
     protected sealed override ITokenType LocateNextMatch(long tokenStart, int? currentChar)
     {
-        foreach (var set in TokenInheritanceOrder)
+        foreach (var t in TokenInheritanceOrder.SelectMany(e => e).Where(t => ShouldMatchType(t) && TryMatchType(tokenStart, currentChar, t)))
         {
-            var match = GetNextMatch(set, tokenStart, currentChar);
-            if (match is not IInvalidTokenType)
-            {
-                return match;
-            }
+            return t;
         }
 
         return InvalidToken;
     }
-    
-    /// <summary>
-    /// template method that will be implemented by derived classes to provide custom token matching logic.
-    /// </summary>
-    /// <param name="set">The token set to match.</param>
-    /// <param name="tokenStart">The start position of the token.</param>
-    /// <param name="currentChar">The current character being processed.</param>
-    /// <returns>Returns the matched token type.</returns>
-    protected abstract ITokenType GetNextMatch(ITokenTypeSet set, long tokenStart, int? currentChar);
+
+    protected bool TryMatchType(long tokenStart, int? currentChar, ITokenType type) =>
+        type.Matches(this, tokenStart, currentChar);
+
+    protected virtual bool ShouldMatchType(ITokenType tokenType) => true;
 
     protected TokenSetLexer(Document document, bool leaveOpen = false) : base(document, leaveOpen)
     {

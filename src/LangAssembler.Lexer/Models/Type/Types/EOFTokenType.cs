@@ -1,4 +1,6 @@
-﻿namespace LangAssembler.Lexer.Models.Type.Types;
+﻿using LangAssembler.Lexer.Base;
+
+namespace LangAssembler.Lexer.Models.Type.Types;
 
 /// <summary>
 /// Singleton class for representing an End of File (EOF) token type.
@@ -23,6 +25,11 @@ public class EOFTokenType : IEOFTokenType
     /// This property is mainly used for debugging and error reporting.
     /// </summary>
     public string DebugName => EOFTokenName;
+
+    public bool Matches(ILexer tokenSetLexer, long tokenStart, int? currentChar)
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Private constructor to enforce the singleton pattern.

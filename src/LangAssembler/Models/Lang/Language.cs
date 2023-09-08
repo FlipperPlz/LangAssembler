@@ -17,14 +17,14 @@ public abstract class Language
     public static Language Of<TLang>() where TLang : Language, new()
     {
         var type = typeof(TLang);
-        if(Languages.TryGetValue(type, out var language))
+        if(!Languages.TryGetValue(type, out var language))
         {
-            return language;
+            var lang = new TLang();
+            Languages.Add(type, lang);
+            language = lang;
         }
 
-        var lang = new TLang();
-        Languages.Add(type, lang);
-        return lang;
+        return language;
     }
 
     #endregion
