@@ -33,7 +33,11 @@ public abstract class TokenSetLexer<TTokenSet> : Lexer, IBoundLexer<TTokenSet>
     /// <inheritdoc cref="Lexer.GetNextMatch"/>
     protected sealed override ITokenType LocateNextMatch(long tokenStart, int? currentChar)
     {
-        foreach (var t in TokenInheritanceOrder.SelectMany(e => e).Where(t => ShouldMatchType(t) && TryMatchType(tokenStart, currentChar, t)))
+        foreach (var t in TokenInheritanceOrder.
+                     SelectMany(e => e).
+                     Where(t => 
+                         ShouldMatchType(t) && TryMatchType(tokenStart, currentChar, t)
+                     ))
         {
             return t;
         }

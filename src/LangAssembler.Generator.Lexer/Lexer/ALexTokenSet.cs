@@ -1,8 +1,6 @@
 ﻿using LangAssembler.Lexer.Base;
 using LangAssembler.Lexer.Models.Type;
 using LangAssembler.Lexer.Models.TypeSet;
-using LangAssembler.Models.Buffer;
-using LangAssembler.Models.Buffer.Encoded;
 
 namespace LangAssembler.Generator.Lexer.Lexer;
 
@@ -103,14 +101,6 @@ public sealed class ALexTokenSet : TokenTypeSet
         MatchWord(lexer, tokenStart, currentChar, "external");
     private static bool MatchPrivateModifier(ILexer lexer, long tokenStart, int? currentChar) =>
         MatchWord(lexer, tokenStart, currentChar, "private");
-    
-    private static bool MatchStringLiteral(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
-    
-    private static bool MatchHexLiteral(ILexer lexer, long tokenStart, int? currentChar)
-    {
-        throw new NotImplementedException();
-    }
+    private static bool MatchStringLiteral(ILexer lexer, long tokenStart, int? currentChar) => false; //TODO
+    private static bool MatchHexLiteral(ILexer lexer, long tokenStart, int? currentChar) => false; //TODO
 }
